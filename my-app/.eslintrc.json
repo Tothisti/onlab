@@ -44,11 +44,17 @@
             "allowExpressions": true
             }
         ],
-        "max-len": ["warn", { "code": 80 }],
+        "max-len": ["warn", { "code": 160 }],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "import/prefer-default-export": "off",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "no-restricted-imports": [
+            "error",
+            {
+              "patterns": ["@material-ui/*/*/*", "!@material-ui/core/test-utils/*"]
+            }
+        ]
     },
 
     "settings": {
