@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcherPanel from '../components/LanguageSwitcherPanel'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser, selectUser } from '../features/auth/authSlice'
+import Box from '@material-ui/core/Box'
+import { type AppDispatch } from '../app/store'
+import { useNavigate } from 'react-router'
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles((_theme) =>
   createStyles(
     {
       loginPanel: {
@@ -29,16 +34,26 @@ const useStyles = makeStyles((theme) =>
 const Login: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
+  const dispatch = useDispatch<AppDispatch>()
+  const user = useSelector(selectUser)
+  const [usern, setUserName] = useState('')
+  const [passw, setPassword] = useState('')
+  const navigate = useNavigate()
+
+  if (user !== null) navigate('/')
+
   return (
       <Paper className={classes.loginPanel} elevation={5}>
         <LanguageSwitcherPanel />
-        <form className={classes.form} noValidate autoComplete="off">
+        <Box className={classes.form}>
           <TextField
             className={classes.textField}
             id="username"
             label={t('validation:username')}
             variant='outlined'
             margin='normal'
+            value={usern}
+            onChange={(e) => { setUserName(e.target.value) }}
           />
           <TextField
             className={classes.textField}
@@ -46,16 +61,18 @@ const Login: React.FC = () => {
             label={t('validation:password')}
             variant='outlined'
             margin='normal'
+            value={passw}
+            onChange={(e) => { setPassword(e.target.value) }}
             // type='password'
           />
           <Button
-            type='submit'
             variant='contained'
             color="secondary"
+            onClick={() => { dispatch(loginUser({ usern, passw })).then((data) => { console.log(data) }) }}
           >
             {t('validation:login')}
           </Button>
-        </form>
+        </Box>
       </Paper>
   )
 }
