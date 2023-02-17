@@ -6,7 +6,8 @@ import router from './app/router'
 import { RouterProvider } from 'react-router-dom'
 import { CssBaseline, ThemeProvider } from '@material-ui/core'
 import theme from './app/theme'
-
+import store from './app/store'
+import { Provider } from 'react-redux'
 // import i18
 import './app/i18n'
 
@@ -17,7 +18,9 @@ root.render(
   <React.StrictMode>
     <CssBaseline />
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>
 )

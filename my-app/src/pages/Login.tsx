@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
@@ -10,14 +9,6 @@ import LanguageSwitcherPanel from '../components/LanguageSwitcherPanel'
 const useStyles = makeStyles((theme) =>
   createStyles(
     {
-      root: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'gray'
-      },
       loginPanel: {
         height: '500px',
         width: '500px'
@@ -38,9 +29,7 @@ const useStyles = makeStyles((theme) =>
 const Login: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-
   return (
-    <Box className={classes.root}>
       <Paper className={classes.loginPanel} elevation={5}>
         <LanguageSwitcherPanel />
         <form className={classes.form} noValidate autoComplete="off">
@@ -57,7 +46,7 @@ const Login: React.FC = () => {
             label={t('validation:password')}
             variant='outlined'
             margin='normal'
-            type='password'
+            // type='password'
           />
           <Button
             type='submit'
@@ -68,7 +57,6 @@ const Login: React.FC = () => {
           </Button>
         </form>
       </Paper>
-    </Box>
   )
 }
 
