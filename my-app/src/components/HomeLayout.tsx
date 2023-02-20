@@ -2,6 +2,11 @@ import React from 'react'
 import Box from '@material-ui/core/Box'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { Outlet } from 'react-router'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../features/auth/authSlice'
+import { Button } from '@material-ui/core'
+import { useTranslation } from 'react-i18next'
+import LogoutButton from './auth/LogoutButton'
 
 const useStyles = makeStyles((theme) =>
   createStyles(
@@ -19,10 +24,20 @@ const useStyles = makeStyles((theme) =>
 )
 
 const HomeLayout: React.FC = () => {
+  const user = useSelector(selectUser)
   const classes = useStyles()
+
+  let logout
+  if (user !== null) {
+    logout = <LogoutButton />
+  }
+
   return (
-    <Box className={classes.root}>
+    <Box style={{ height: '100%', width: '100%' }}>
+      <Box>{logout}</Box>
+      <Box className={classes.root}>
         <Outlet />
+      </Box>
     </Box>
   )
 }

@@ -10,6 +10,7 @@ import { loginUser, selectUser } from '../features/auth/authSlice'
 import Box from '@material-ui/core/Box'
 import { type AppDispatch } from '../app/store'
 import { useNavigate } from 'react-router'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((_theme) =>
   createStyles(
@@ -39,8 +40,22 @@ const Login: React.FC = () => {
   const [usern, setUserName] = useState('')
   const [passw, setPassword] = useState('')
   const navigate = useNavigate()
-
+  const { enqueueSnackbar } = useSnackbar()
   if (user !== null) navigate('/')
+
+  const onClickHandler = (): void => {
+    dispatch(loginUser({ usern, passw }))
+      .then((data) => {
+        enqueueSnackbar(
+          'Sikerült a belépés',
+          {
+            variant: 'success',
+            transitionDuration: { enter: 200, exit: 190 },
+            autoHideDuration: 4000
+          }
+        )
+      })
+  }
 
   return (
       <Paper className={classes.loginPanel} elevation={5}>
@@ -68,7 +83,7 @@ const Login: React.FC = () => {
           <Button
             variant='contained'
             color="secondary"
-            onClick={() => { dispatch(loginUser({ usern, passw })).then((data) => { console.log(data) }) }}
+            onClick={onClickHandler}
           >
             {t('validation:login')}
           </Button>

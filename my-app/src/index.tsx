@@ -8,6 +8,8 @@ import { CssBaseline, ThemeProvider } from '@material-ui/core'
 import theme from './app/theme'
 import store from './app/store'
 import { Provider } from 'react-redux'
+import { SnackbarProvider } from 'notistack'
+
 // import i18
 import './app/i18n'
 
@@ -19,7 +21,9 @@ root.render(
     <CssBaseline />
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <SnackbarProvider maxSnack={3} >
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>

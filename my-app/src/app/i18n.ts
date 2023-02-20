@@ -17,7 +17,8 @@ const i18n = i18next
         validation: {
           username: 'username',
           password: 'password',
-          login: 'login'
+          login: 'login',
+          logout: 'logout'
         }
       },
       de: {
@@ -27,7 +28,8 @@ const i18n = i18next
         validation: {
           username: 'nutzername',
           password: 'passwort',
-          login: 'anmeldung'
+          login: 'anmeldung',
+          logout: 'ausloggen'
         }
       }
     }
