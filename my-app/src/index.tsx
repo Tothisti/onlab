@@ -22,7 +22,7 @@ root.render(
     <CssBaseline />
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<div>LOADING</div>} persistor={persistor}>
           <SnackbarProvider maxSnack={3} >
             <RouterProvider router={router} />
           </SnackbarProvider>

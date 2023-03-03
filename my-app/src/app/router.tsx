@@ -1,10 +1,11 @@
 import React from 'react'
-import Home from '../pages/Home'
+import Home from '../pages/Menu'
 import Login from '../pages/Login'
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import HomeLayout from '../components/HomeLayout'
-import Grid from '../pages/Grid'
+import KittingDashboard from '../pages/KittingDashboard'
+import KittingMaintance from '../pages/KitcartMaintance'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,10 +25,18 @@ const router = createBrowserRouter(
         element={<Login />}
       />
       <Route
-        path='/grid'
+        path='/kitting-dashboard'
         element={(
           <ProtectedRoute>
-            <Grid />
+            <KittingDashboard />
+          </ProtectedRoute>
+        )}
+      />
+       <Route
+        path='/kitting-maintance'
+        element={(
+          <ProtectedRoute>
+            <KittingMaintance />
           </ProtectedRoute>
         )}
       />

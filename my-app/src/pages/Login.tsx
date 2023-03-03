@@ -5,12 +5,13 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcherPanel from '../components/LanguageSwitcherPanel'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { loginUser, selectUser } from '../features/auth/authSlice'
 import Box from '@material-ui/core/Box'
 import { useNavigate } from 'react-router'
 import { useSnackbar } from 'notistack'
-import { type AppDispatch } from '../app/store'
+import { useAppDispatch, type RootState } from '../app/store'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles((_theme) =>
   createStyles(
@@ -35,12 +36,14 @@ const useStyles = makeStyles((_theme) =>
 const Login: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const user = useSelector(selectUser)
   const [usern, setUserName] = useState('')
   const [passw, setPassword] = useState('')
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
+  const loginStatus = useSelector((state: RootState) => state.login.status)
+
   if (user !== null) navigate('/')
 
   const onClickHandler = (): void => {
@@ -55,6 +58,7 @@ const Login: React.FC = () => {
           }
         )
       })
+      .catch(() => { console.log('hmmm') })
   }
 
   return (
@@ -84,8 +88,9 @@ const Login: React.FC = () => {
             variant='contained'
             color="secondary"
             onClick={onClickHandler}
+            disabled={loginStatus === 'loading'}
           >
-            {t(':login')}
+            {loginStatus === 'loading' ? <CircularProgress size={24} color='secondary'/> : t('login')}
           </Button>
         </Box>
       </Paper>
