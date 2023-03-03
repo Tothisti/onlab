@@ -18,7 +18,7 @@ const LogoutButton: React.FC = () => {
             color='secondary'
             onClick={onClickHandler}
         >
-            {t('validate:logout')}
+            {t('logout')}
         </Button>)
 }
 

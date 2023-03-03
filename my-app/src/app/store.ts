@@ -1,13 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit'
 import authSlice from '../features/auth/authSlice'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage/session'
 
-const store = configureStore({
-  reducer: {
-    login: authSlice
-  }
+// for redux-persist error in console
+const customizedMiddleware = getDefaultMiddleware({
+  serializableCheck: false
 })
 
-export default store
+const rootReducer = combineReducers({
+  login: authSlice
+})
+
+const persistConfig = {
+  key: 'root',
+  storage
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: customizedMiddleware
+})
+
+export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

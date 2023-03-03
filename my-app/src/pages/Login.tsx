@@ -8,9 +8,9 @@ import LanguageSwitcherPanel from '../components/LanguageSwitcherPanel'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, selectUser } from '../features/auth/authSlice'
 import Box from '@material-ui/core/Box'
-import { type AppDispatch } from '../app/store'
 import { useNavigate } from 'react-router'
 import { useSnackbar } from 'notistack'
+import { type AppDispatch } from '../app/store'
 
 const useStyles = makeStyles((_theme) =>
   createStyles(
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
           <TextField
             className={classes.textField}
             id="username"
-            label={t('validation:username')}
+            label={t('username')}
             variant='outlined'
             margin='normal'
             value={usern}
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
           <TextField
             className={classes.textField}
             id="username"
-            label={t('validation:password')}
+            label={t('password')}
             variant='outlined'
             margin='normal'
             value={passw}
@@ -85,7 +85,7 @@ const Login: React.FC = () => {
             color="secondary"
             onClick={onClickHandler}
           >
-            {t('validation:login')}
+            {t(':login')}
           </Button>
         </Box>
       </Paper>

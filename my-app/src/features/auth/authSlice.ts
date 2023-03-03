@@ -60,5 +60,6 @@ export default authSlice.reducer
 
 // selectors
 export const selectUser = (state: RootState): string | null => {
+  console.log(state)
   return state.login.user
 }

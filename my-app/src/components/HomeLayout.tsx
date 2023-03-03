@@ -4,8 +4,6 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { Outlet } from 'react-router'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/auth/authSlice'
-import { Button } from '@material-ui/core'
-import { useTranslation } from 'react-i18next'
 import LogoutButton from './auth/LogoutButton'
 
 const useStyles = makeStyles((theme) =>
