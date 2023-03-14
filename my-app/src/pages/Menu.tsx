@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -35,6 +35,10 @@ const Menu: React.FC = () => {
         justifyContent="center"
         alignItems="center"
       >
+        <Typography
+        variant='h1'
+        >Hello
+        </Typography>
         <Link to={'/kitting-dashboard'}>Kitting dashboard</Link>
         <Link to={'/kitting-maintance'}>Kitting maintance</Link>
       </Grid>

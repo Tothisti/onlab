@@ -12,7 +12,7 @@ const LanguageSwitcherPanel: React.FC = () => {
             (lng) => (
             <Button color='primary' key={lng}
 
-                onClick={() => { i18n.changeLanguage(lng) }}
+                onClick={() => { i18n.changeLanguage(lng).catch(() => { console.log('now lan') }) }}
                 disabled={i18n.resolvedLanguage === lng}
                 >
             {lngs[lng as keyof typeof lngs].nativeName}

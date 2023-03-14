@@ -15,7 +15,7 @@ const LogoutButton: React.FC = () => {
   return (
         <Button
             variant='contained'
-            color='secondary'
+            color='primary'
             onClick={onClickHandler}
         >
             {t('logout')}
