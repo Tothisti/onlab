@@ -9,16 +9,23 @@ const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false
 })
 
-const rootReducer = combineReducers({
-  login: authSlice
-})
-
-const persistConfig = {
+const rootPersistConfig = {
   key: 'root',
-  storage
+  storage,
+  blacklist: ['login']
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const authPersistConfig = {
+  key: 'login',
+  storage,
+  blacklist: ['status']
+}
+
+const rootReducer = combineReducers({
+  login: persistReducer(authPersistConfig, authSlice)
+})
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,

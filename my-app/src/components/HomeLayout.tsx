@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) =>
 
 const HomeLayout: React.FC = () => {
   const classes = useStyles()
-
   return (
     <Box style={{ height: '100%', width: '100%' }}>
       <Navbar />

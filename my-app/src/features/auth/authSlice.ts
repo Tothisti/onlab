@@ -1,23 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { type RootState } from '../../app/store'
+import myAxios from '../../app/axiosInstance'
+import { type LoginTokenResponse } from '../../models/api/loginTokenResponse'
 
 export const loginUser = createAsyncThunk(
   'login/loginUser',
   async (loginData: { usern: string, passw: string }) => {
+    let postBody = {}
+    if (loginData.usern !== '') postBody = { id: 'string', username: 'hunpxs', password: 'b56e0b4ea4962283bee762525c2d490f', token: 'string' }
     // call login api endpoint
-    const response: {
-      user: string
-      token: string
-    } = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          user: loginData.usern,
-          token: 'random hash'
-        })
-      }, 2000)
-    })
-
-    return response
+    return await myAxios.post<LoginTokenResponse>('Login/Token', postBody)
   })
 
 interface IinitialState {
@@ -49,8 +41,11 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.user = action.payload.user
-        state.token = action.payload.token
+        // state.user = action.payload.username
+        // state.token = action.payload.token
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed'
       })
   }
 })
