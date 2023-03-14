@@ -86,11 +86,11 @@ const Login: React.FC = () => {
           />
           <Button
             variant='contained'
-            color="secondary"
+            color="primary"
             onClick={onClickHandler}
             disabled={loginStatus === 'loading'}
           >
-            {loginStatus === 'loading' ? <CircularProgress size={24} color='secondary'/> : t('login')}
+            {loginStatus === 'loading' ? <CircularProgress size={24} color='primary'/> : t('login')}
           </Button>
         </Box>
       </Paper>

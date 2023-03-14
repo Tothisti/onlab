@@ -2,10 +2,7 @@ import React from 'react'
 import Box from '@material-ui/core/Box'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { Outlet } from 'react-router'
-import { useSelector } from 'react-redux'
-import { selectUser } from '../features/auth/authSlice'
-import LogoutButton from './auth/LogoutButton'
-
+import Navbar from './Navbar'
 const useStyles = makeStyles((theme) =>
   createStyles(
     {
@@ -13,26 +10,18 @@ const useStyles = makeStyles((theme) =>
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'gray'
+        width: '100%'
       }
     }
   )
 )
 
 const HomeLayout: React.FC = () => {
-  const user = useSelector(selectUser)
   const classes = useStyles()
-
-  let logout
-  if (user !== null) {
-    logout = <LogoutButton />
-  }
 
   return (
     <Box style={{ height: '100%', width: '100%' }}>
-      <Box>{logout}</Box>
+      <Navbar />
       <Box className={classes.root}>
         <Outlet />
       </Box>

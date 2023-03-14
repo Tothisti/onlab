@@ -7,7 +7,6 @@ const useStyles = makeStyles((_theme) =>
   createStyles(
     {
       layout: {
-        height: '100%',
         width: '100%',
         padding: '45px',
         backgroundColor: '#f1f1f1'
