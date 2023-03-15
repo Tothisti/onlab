@@ -32,28 +32,36 @@ export const authSlice = createSlice({
       state.user = null
       state.token = null
       state.status = 'idle'
+    },
+    clearStatus: state => {
+      state.status = 'idle'
     }
   },
   extraReducers (builder) {
     builder
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(loginUser.pending, (state) => {
         state.status = 'loading'
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        const { data } = action.payload
         state.status = 'succeeded'
-        // state.user = action.payload.username
-        // state.token = action.payload.token
+        state.user = data.username
+        state.token = data.token
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state) => {
         state.status = 'failed'
       })
   }
 })
-export const { logoutUser } = authSlice.actions
+export const { logoutUser, clearStatus } = authSlice.actions
 
 export default authSlice.reducer
 
 // selectors
 export const selectUser = (state: RootState): string | null => {
   return state.login.user
+}
+
+export const selectToken = (state: RootState): string | null => {
+  return state.login.token
 }

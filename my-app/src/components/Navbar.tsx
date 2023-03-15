@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import LogoutButton from './auth/LogoutButton'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/auth/authSlice'
+import BackButton from './BackButton'
 
 const useStyles = makeStyles({
   navbar: {
@@ -27,6 +28,7 @@ const Navbar = (): JSX.Element => {
     <nav className={classes.navbar}>
       <div></div>
       <div></div>
+      <BackButton />
       {logout}
     </nav>
   )

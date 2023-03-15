@@ -1,21 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import DasboardDataMatrix from '../components/kittingDashboard/DashboardDataMatrix'
+import { type RootState, useAppDispatch } from '../app/store'
+import ProductionLineDropDown from '../components/kittingDashboard/ProductionLineDropDown'
+import PreparationAreaDropDown from '../components/kittingDashboard/PreparationAreaDropDown'
+import { GetDashboardData } from '../features/auth/dashboardSlice'
+import { useSelector } from 'react-redux'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles((_theme) =>
   createStyles(
     {
       layout: {
         width: '100%',
-        padding: '45px',
+        padding: '15px',
         backgroundColor: '#f1f1f1'
       }
     }
   )
 )
 // testdata
-type Row = Record<string, string | string[]>
+type Row = Record<string, string | string[]> & { position?: number }
 const cols = [
   { field: 'order', style: { minWidth: '250px' } },
   { field: '1753' },
@@ -112,7 +119,8 @@ const cols = [
 const rows: Row[] = [
   {
     order: ['FSDAFWEIFEW-AJFAEÉFJAA-433434-FDSFDEDE'],
-    1753: ['LATE', 'another', 'another2', 'another2', 'another2']
+    1753: ['LATE', 'another', 'another2', 'another2', 'another2'],
+    2732: ['mukodik']
   },
   {
     order: 'FSDAFWEIFEW-AJFAEÉFJAA-433434-FDSFDEDE',
@@ -134,10 +142,26 @@ const rows: Row[] = [
 
 const KittingDashboard: React.FC = () => {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
+  const data = useSelector((state: RootState) => state.dashboard.dashboardData)
+  const status = useSelector((state: RootState) => state.dashboard.status)
+  console.log(data)
+  useEffect(() => {
+    dispatch(GetDashboardData()).catch(() => { console.log('hiba') })
+  }, [])
+
+  let matrix: JSX.Element = <CircularProgress />
+  if (status === 'succeeded') matrix = <DasboardDataMatrix rows={rows} columns={cols} />
+  if (status === 'failed') matrix = <div>Error</div>
 
   return (
     <Box className={classes.layout}>
-        <DasboardDataMatrix rows={rows} columns={cols}/>
+      <ProductionLineDropDown />
+      <PreparationAreaDropDown />
+      <Button variant='contained' color='primary' onClick={() => { dispatch(GetDashboardData()).catch(() => { console.log('hiba') }) }}>Search</Button>
+      <div>
+        {matrix}
+      </div>
     </Box>
   )
 }

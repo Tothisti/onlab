@@ -6,6 +6,7 @@ import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import HomeLayout from '../components/HomeLayout'
 import KittingDashboard from '../pages/KittingDashboard'
 import KittingMaintance from '../pages/KitcartMaintance'
+import Page from '../components/Page'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,27 +17,37 @@ const router = createBrowserRouter(
         path='/'
         element={(
           <ProtectedRoute>
-            <Home />
+            <Page title='Home'>
+              <Home />
+            </Page>
           </ProtectedRoute>
         )}
       />
       <Route
         path='/login'
-        element={<Login />}
+        element={
+          <Page title='Login'>
+            <Login />
+          </Page>
+        }
       />
       <Route
         path='/kitting-dashboard'
         element={(
           <ProtectedRoute>
-            <KittingDashboard />
+            <Page title='Dashboard'>
+              <KittingDashboard />
+            </Page>
           </ProtectedRoute>
         )}
       />
-       <Route
+      <Route
         path='/kitting-maintance'
         element={(
           <ProtectedRoute>
-            <KittingMaintance />
+            <Page title='Maintance'>
+              <KittingMaintance />
+            </Page>
           </ProtectedRoute>
         )}
       />
