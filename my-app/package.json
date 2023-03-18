@@ -27,6 +27,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "jotai": "^2.0.2",
     "lodash": "^4.17.21",
+    "md5": "^2.3.0",
     "notistack": "^1.0.10",
     "ramda": "^0.28.0",
     "react": "^18.2.0",

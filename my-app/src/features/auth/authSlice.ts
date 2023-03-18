@@ -2,12 +2,20 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { type RootState } from '../../app/store'
 import myAxios from '../../app/axiosInstance'
 import { type LoginTokenResponse } from '../../models/api/loginTokenResponse'
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const md5 = require('md5')
 export const loginUser = createAsyncThunk(
   'login/loginUser',
   async (loginData: { usern: string, passw: string }) => {
     let postBody = {}
-    if (loginData.usern !== '') postBody = { id: 'string', username: 'hunpxs', password: 'b56e0b4ea4962283bee762525c2d490f', token: 'string' }
+    if (loginData.usern !== '') {
+      postBody = {
+        id: 'string',
+        username: loginData.usern,
+        password: md5(loginData.passw),
+        token: 'string'
+      }
+    }
     // call login api endpoint
     return await myAxios.post<LoginTokenResponse>('Login/Token', postBody)
   })
