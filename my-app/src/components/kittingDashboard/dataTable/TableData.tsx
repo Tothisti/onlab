@@ -15,19 +15,18 @@ const useStyles = makeStyles({
 
 interface Props {
   field: string | string[]
-  key: number
 }
 
-const TableData = ({ field, key }: Props): JSX.Element => {
+const TableData = ({ field }: Props): JSX.Element => {
   const classes = useStyles()
 
   return (
-    <td className={classes.tableData} key={key}>
+    <td className={classes.tableData}>
           <div className={classes.dataDiv}>
             {
               Array.isArray(field)
-                ? field.map((item: string) =>
-                    <div key={key}>{ item }</div>)
+                ? field.map((item: string, i) =>
+                    <div key={i}>{ item }</div>)
                 : <div> {field} </div>
             }
           </div>

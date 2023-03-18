@@ -18,7 +18,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 root.render(
-  <React.StrictMode>
+  <>
     <CssBaseline />
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -29,7 +29,7 @@ root.render(
         </PersistGate>
       </Provider>
     </ThemeProvider>
-  </React.StrictMode>
+  </>
 )
 
 reportWebVitals()

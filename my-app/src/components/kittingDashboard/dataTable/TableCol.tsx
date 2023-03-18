@@ -13,17 +13,15 @@ const useStyles = makeStyles({
 
 interface Props {
   field: string
-  key: number
   style?: React.CSSProperties
 }
 
-const TableCol = ({ field, key, style }: Props): JSX.Element => {
+const TableCol = ({ field, style }: Props): JSX.Element => {
   const classes = useStyles()
   return (
     <th
       className={classes.tableHeader}
       style={style}
-      key={key}
     >
       {field}
     </th>

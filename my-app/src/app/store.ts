@@ -3,22 +3,30 @@ import authSlice from '../features/auth/authSlice'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage/session'
 import { useDispatch } from 'react-redux'
-
+import dashboardSlice from '../features/auth/dashboardSlice'
 // for redux-persist error in console
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false
 })
 
-const rootReducer = combineReducers({
-  login: authSlice
-})
-
-const persistConfig = {
+const rootPersistConfig = {
   key: 'root',
-  storage
+  storage,
+  blacklist: ['login']
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const authPersistConfig = {
+  key: 'login',
+  storage,
+  blacklist: ['status']
+}
+
+const rootReducer = combineReducers({
+  login: persistReducer(authPersistConfig, authSlice),
+  dashboard: dashboardSlice
+})
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 export const store = configureStore({
   reducer: persistedReducer,
