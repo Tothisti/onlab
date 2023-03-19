@@ -6,15 +6,15 @@ interface KitCart {
 }
 
 interface WorkCenter {
-  workCenter: string | null
-  position: number | null
-  parallelSequence: number | null
-  kitCarts: KitCart[] | null
+  workCenter: string
+  position: number
+  parallelSequence: number
+  kitCarts: KitCart[]
 }
 
 export interface DashboardData {
   vin: string | null
   productionOrderNo: string | null
   orderPosition: number | null
-  workCenters: WorkCenter[] | null
+  workCenters: WorkCenter[]
 }

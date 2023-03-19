@@ -19,15 +19,17 @@ const useStyles = makeStyles(() =>
 )
 
 interface Compare {
-  position?: number
+  position?: number | null
 }
 
-interface Column extends Compare {
+export interface Column extends Compare {
   field: string
   style?: React.CSSProperties
 }
 
-type Row = Record<string, string | string[]> & Compare
+export interface Row extends Compare {
+  fields: Record<string, string | string[]>
+}
 
 interface Props {
   columns: Column[]
@@ -35,11 +37,11 @@ interface Props {
 }
 
 const CreateRow = (row: Row, cols: Column[], key: number): JSX.Element => {
-  const rowKeys = Object.keys(row)
+  const rowKeys = Object.keys(row.fields)
   const rowResult = cols.map((col, i) => {
     const rIndex = rowKeys.indexOf(col.field)
     return rIndex !== -1
-      ? <TableData field={row[col.field]} key={i} />
+      ? <TableData field={row.fields[col.field]} key={i} />
       : <TableData field='empty' key={i} />
   })
   return <tr key={key}>{rowResult}</tr>
@@ -60,18 +62,30 @@ const MapDataToCols = (cols: Column[]): JSX.Element => {
     </tr>
   )
 }
-//! sorting test
-// const PositionCompareFn = <T extends Compare>(a: T, b: T): number => {
-//   return 0
-// }
 
-// const OrderItemsByPosition = <T extends Compare>(list: T[]): T[] => {
-//   const listWithoutPosition = list.filter((item) => typeof item.position === 'undefined')
-//   const
-// }
+const PositionCompareFn = <T extends Compare>(a: T, b: T): number => {
+  if (typeof a.position === 'undefined' &&
+      typeof b.position !== 'undefined') return 1
+  if (typeof a.position !== 'undefined' &&
+      typeof b.position === 'undefined') return -1
+  if (typeof a.position !== 'undefined' &&
+      typeof b.position !== 'undefined') {
+    if ((a.position != null && b.position != null) && a.position > b.position) return 1
+    if ((a.position != null && b.position != null) && a.position < b.position) return -1
+    if (a.position === b.position) return 0
+  }
+  return 0
+}
+
+const OrderItemsByPosition = <T extends Compare>(list: T[]): T[] => {
+  const temp = list.slice()
+  return temp.sort(PositionCompareFn)
+}
 
 const DasboardDataMatrix: React.FC<Props> = (props: Props) => {
-  const { columns, rows } = props
+  let { columns, rows } = props
+  columns = OrderItemsByPosition(columns)
+  rows = OrderItemsByPosition(rows)
   const classes = useStyles()
   return (
     <Box className={classes.tableContainer}>
