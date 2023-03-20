@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { useAppDispatch } from '../../app/store'
+import { type RootState, useAppDispatch } from '../../app/store'
 import { selectProductionLine } from '../../features/auth/dashboardSlice'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,6 +35,7 @@ const ProductionLineDropDown: React.FC = (): JSX.Element => {
   const token = useSelector(selectToken)
   const [productionLines, setProductionLines] = useState<ProductionLine[]>()
   const dispatch = useAppDispatch()
+  const prodLine = useSelector((state: RootState) => state.dashboard.productionLine)
 
   useEffect(() => {
     myAxios.get<ProductionLine[]>(
@@ -55,7 +56,7 @@ const ProductionLineDropDown: React.FC = (): JSX.Element => {
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
-        defaultValue=''
+        defaultValue={prodLine !== null ? prodLine : ''}
         onChange={handleChange}
       >
         <MenuItem value="">

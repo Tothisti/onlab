@@ -27,16 +27,21 @@ export interface Column extends Compare {
   style?: React.CSSProperties
 }
 
-export interface Row extends Compare {
-  fields: Record<string, string | string[]>
+export interface FieldData {
+  status: number
+  value: string
 }
+
+interface IRow { fields: Record<string, string | FieldData | FieldData[]> }
+
+export interface Row extends Compare, IRow {}
 
 interface Props {
   columns: Column[]
   rows: Row[]
 }
 
-const CreateRow = (row: Row, cols: Column[], key: number): JSX.Element => {
+const CreateRow = (row: IRow, cols: Column[], key: number): JSX.Element => {
   const rowKeys = Object.keys(row.fields)
   const rowResult = cols.map((col, i) => {
     const rIndex = rowKeys.indexOf(col.field)

@@ -23,132 +23,9 @@ const useStyles = makeStyles((_theme) =>
     }
   )
 )
-// testdata
-
-const cols = [
-  { field: 'order', style: { minWidth: '250px' } },
-  { field: '1753' },
-  { field: '2732' },
-  { field: '2733' },
-  { field: '2734' },
-  { field: '2735' },
-  { field: '2736' },
-  { field: '2737' },
-  { field: '2738' },
-  { field: '2739' },
-  { field: '2740' },
-  { field: '2741' },
-  { field: '2742' },
-  { field: '2743' },
-  { field: '2744' },
-  { field: '2745' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '6969', position: -1 },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' },
-  { field: '2746' }
-]
-const rows: Row[] = [
-  {
-    fields: {
-      order: ['FSDAFWEIFEW-AJFAEÉFJAA-433434-FDSFDEDE'],
-      1753: ['LATE', 'another', 'another2', 'another2', 'another2'],
-      2732: ['mukodik']
-    }
-  },
-  {
-    fields: {
-      order: 'FSDAFWEIFEW-AJFAEÉFJAA-433434-FDSFDEDE',
-      2732: ['LATE']
-    }
-  },
-  {
-    fields: {
-      order: 'FSDAFWEIFEW-AJFAEÉFJAA-433434-FDSFDEDE',
-      2733: ['LATE']
-    }
-  },
-  {
-    position: 0,
-    fields: {
-      order: 'jeee',
-      2734: ['LATE']
-    }
-  }
-]
 
 const MapApiDataToCols = (data: DashboardData[] | null): Column[] => {
-  if (data === null) return []
+  if (data === null || data.length === 0) return []
   const res: Column[] = data[0].workCenters?.map((wc) => {
     return ({ field: wc.workCenter, position: wc.position })
   })
@@ -156,23 +33,24 @@ const MapApiDataToCols = (data: DashboardData[] | null): Column[] => {
 }
 
 const MapApiDataToRows = (data: DashboardData[] | null): Row[] => {
-  if (data === null) return []
+  if (data === null || data.length === 0) return []
   const res: Row[] = data.map((item) => {
     const fields = item.workCenters.map((order) => {
       return ({
-        [order.workCenter]: order.kitCarts.map((kitCart) => kitCart.description)
+        [order.workCenter]: order.kitCarts.map((kitCart) => {
+          return { value: kitCart.description, status: kitCart.status }
+        })
       })
     })
     const f = fields.reduce((result, current) => Object.assign(result, current), {})
     return ({
       position: item.orderPosition,
       fields: {
-        order: item.vin ?? 'ninics',
+        order: item.vin ?? 'nincs vin',
         ...f
       }
     })
   })
-  console.log(res)
   return res
 }
 
@@ -187,9 +65,9 @@ const KittingDashboard: React.FC = () => {
 
   let matrix: JSX.Element = <CircularProgress />
   if (status === 'succeeded') {
-    const rowss = MapApiDataToRows(data)
-    const colss = MapApiDataToCols(data)
-    matrix = <DasboardDataMatrix rows={rowss} columns={colss} />
+    const rows = MapApiDataToRows(data)
+    const cols = MapApiDataToCols(data)
+    matrix = <DasboardDataMatrix rows={rows} columns={cols} />
   }
   if (status === 'failed') matrix = <div>Error</div>
 
