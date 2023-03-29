@@ -59,7 +59,7 @@ const Login: React.FC<WithStyles<typeof styles>> = (props: WithStyles<typeof sty
   return (
     <Paper className={classes.loginPanel} elevation={5}>
       <LanguageSwitcherPanel />
-      <Box className={classes.form}>
+      <form className={classes.form}>
         <TextField
           className={classes.textField}
           id="username"
@@ -77,7 +77,7 @@ const Login: React.FC<WithStyles<typeof styles>> = (props: WithStyles<typeof sty
           margin='normal'
           value={passw}
           onChange={(e) => { setPassword(e.target.value) }}
-        // type='password'
+          // type='password'
         />
         <Button
           variant='contained'
@@ -87,7 +87,7 @@ const Login: React.FC<WithStyles<typeof styles>> = (props: WithStyles<typeof sty
         >
           {loginStatus === 'loading' ? <CircularProgress size={24} color='primary' /> : t('login')}
         </Button>
-      </Box>
+      </form>
     </Paper>
   )
 }
