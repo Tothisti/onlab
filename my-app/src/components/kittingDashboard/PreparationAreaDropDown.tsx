@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { useAppDispatch } from '../../app/store'
+import { useAppDispatch, type RootState } from '../../app/store'
 import { selectPreparationArea } from '../../features/auth/dashboardSlice'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,6 +35,7 @@ const PreparationAreaDropDown: React.FC = (): JSX.Element => {
   const token = useSelector(selectToken)
   const [preparationAreas, setPreparationAreas] = useState<PreparationAreas[]>()
   const dispatch = useAppDispatch()
+  const prepArea = useSelector((state: RootState) => state.dashboard.preparationArea)
 
   useEffect(() => {
     myAxios.post<PreparationAreas[]>(
@@ -56,7 +57,7 @@ const PreparationAreaDropDown: React.FC = (): JSX.Element => {
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
-        defaultValue=''
+        defaultValue={prepArea !== null ? prepArea : ''}
         onChange={handleChange}
       >
         <MenuItem value="">

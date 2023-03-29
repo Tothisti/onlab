@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
+import { DataGrid } from 'react-agcobpmes-core'
 
 const KittingMaintance: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const KittingMaintance: React.FC = () => {
       justifyContent="center"
       alignItems="center"
     >
-       kittingmaintance
+       { /* <DataGrid /> */ }
     </Grid>
   )
 }
