@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import GenerateHeaders from '../../app/api/GenerateApiHeaders'
-import myAxios from '../../app/axiosInstance'
-import { selectToken } from '../../features/auth/authSlice'
 import { type ProductionLine } from '../../models/api/ProductionLine'
 import { createStyles, makeStyles, type Theme } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { type RootState, useAppDispatch } from '../../app/store'
-import { selectProductionLine } from '../../features/auth/dashboardSlice'
+import { MenuItem } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,24 +24,23 @@ const CreateMenuItems = (productionLines: ProductionLine[]): JSX.Element[] => {
   })
 }
 
-const ProductionLineDropDown: React.FC = (): JSX.Element => {
-  const classes = useStyles()
-  const token = useSelector(selectToken)
-  const [productionLines, setProductionLines] = useState<ProductionLine[]>()
-  const dispatch = useAppDispatch()
-  const prodLine = useSelector((state: RootState) => state.dashboard.productionLine)
+interface DropDownProps {
+  items: string[]
+  onSelectedItem: (selectedItem: string) => void
+  defaultValue?: string
+}
 
-  useEffect(() => {
-    myAxios.get<ProductionLine[]>(
-      'AssemblyManufacturing/Kitting/KittingDashboard/GetProductionLines',
-      { headers: GenerateHeaders({ token }) }
-    )
-      .then((response) => { setProductionLines(response.data) })
-      .catch(() => { console.log('hiba') })
-  }, [])
+const MyDropDown: React.FC<DropDownProps> = (props: DropDownProps): JSX.Element => {
+  const {
+    items,
+    onSelectedItem,
+    defaultValue
+  } = props
+
+  const classes = useStyles()
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
-    dispatch(selectProductionLine((event.target.value as string)))
+    onSelectedItem((event.target.value as string))
   }
 
   return (
@@ -56,19 +49,21 @@ const ProductionLineDropDown: React.FC = (): JSX.Element => {
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
-        defaultValue={prodLine !== null ? prodLine : ''}
+        defaultValue={defaultValue}
         onChange={handleChange}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        {productionLines != null
-          ? CreateMenuItems(productionLines)
-          : <MenuItem>NODATA</MenuItem>
+        {items !== null && typeof items !== 'undefined'
+          ? items.map((item, i) => {
+            return <MenuItem value={item} key={i}>{item}</MenuItem>
+          })
+          : ''
         }
       </Select>
     </FormControl>
   )
 }
 
-export default ProductionLineDropDown
+export default MyDropDown

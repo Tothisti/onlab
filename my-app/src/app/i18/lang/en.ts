@@ -4,6 +4,7 @@ export const en = {
     username: 'username',
     password: 'password',
     login: 'login',
-    logout: 'logout'
+    logout: 'logout',
+    back: 'back'
   }
 }

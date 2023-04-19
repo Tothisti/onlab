@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <>
     <CssBaseline />
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} >
       <Provider store={store}>
         <PersistGate loading={<div>LOADING</div>} persistor={persistor}>
           <SnackbarProvider maxSnack={3} >

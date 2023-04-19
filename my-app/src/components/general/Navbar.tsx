@@ -1,9 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import LogoutButton from './auth/LogoutButton'
+import LogoutButton from '../auth/LogoutButton'
 import { useSelector } from 'react-redux'
-import { selectUser } from '../features/auth/authSlice'
+import { selectUser } from '../../features/authSlice'
 import BackButton from './BackButton'
+import LanguageSwitcherPanel from './LanguageSwitcherPanel'
 
 const useStyles = makeStyles({
   navbar: {
@@ -18,7 +19,6 @@ const useStyles = makeStyles({
 const Navbar = (): JSX.Element => {
   const classes = useStyles()
   const user = useSelector(selectUser)
-
   let logout
   if (user !== null) {
     logout = <LogoutButton />
@@ -27,7 +27,7 @@ const Navbar = (): JSX.Element => {
   return (
     <nav className={classes.navbar}>
       <div></div>
-      <div></div>
+      <div><LanguageSwitcherPanel/></div>
       <BackButton />
       {logout}
     </nav>

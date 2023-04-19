@@ -3,10 +3,10 @@ import Home from '../pages/Menu'
 import Login from '../pages/Login'
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
-import HomeLayout from '../components/HomeLayout'
+import HomeLayout from '../components/general/HomeLayout'
 import KittingDashboard from '../pages/KittingDashboard'
-import KittingMaintance from '../pages/KitcartMaintance'
-import Page from '../components/Page'
+import KittingMaintance from '../pages/KitCartMaintance'
+import Page from '../components/general/Page'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

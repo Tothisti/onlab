@@ -1,9 +1,11 @@
 import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit'
-import authSlice from '../features/auth/authSlice'
+import authSlice from '../features/authSlice'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage/session'
 import { useDispatch } from 'react-redux'
-import dashboardSlice from '../features/auth/dashboardSlice'
+import dashboardSlice from '../features/dashboardSlice'
+import kitCartMaintanceSlice from '../features/kitCartMaintanceSlice'
+
 // for redux-persist error in console
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false
@@ -23,7 +25,8 @@ const authPersistConfig = {
 
 const rootReducer = combineReducers({
   login: persistReducer(authPersistConfig, authSlice),
-  dashboard: dashboardSlice
+  dashboard: dashboardSlice,
+  kitCartMaintance: kitCartMaintanceSlice
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

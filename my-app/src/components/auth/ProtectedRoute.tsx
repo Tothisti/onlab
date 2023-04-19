@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { selectUser } from '../../features/auth/authSlice'
+import { selectUser } from '../../features/authSlice'
 import { useSelector } from 'react-redux'
 
 interface Props {

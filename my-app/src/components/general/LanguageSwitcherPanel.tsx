@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { lngs } from '../app/i18/i18n'
+import { lngs } from '../../app/i18/i18n'
 
 const LanguageSwitcherPanel: React.FC = () => {
   const { i18n } = useTranslation()
