@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { logoutUser } from '../../features/auth/authSlice'
+import { logoutUser } from '../../features/authSlice'
 
 const LogoutButton: React.FC = () => {
   const { t } = useTranslation()

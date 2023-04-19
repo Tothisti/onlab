@@ -4,6 +4,7 @@ export const de = {
     username: 'nutzername',
     password: 'passwort',
     login: 'anmeldung',
-    logout: 'ausloggen'
+    logout: 'ausloggen',
+    back: 'zurück'
   }
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TableCol from './dataTable/TableCol'
-import TableData from './dataTable/TableData'
+import TableCol from './TableCol'
+import TableData from './TableData'
 
 const useStyles = makeStyles(() =>
   createStyles({

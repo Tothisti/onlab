@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { type FieldData } from '../DashboardDataMatrix'
+import { type FieldData } from './DashboardDataMatrix'
 
 const useStyles = makeStyles({
   tableData: {
