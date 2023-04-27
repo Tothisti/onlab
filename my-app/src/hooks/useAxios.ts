@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectToken } from '../features/authSlice'
 import { type RawAxiosRequestHeaders } from 'axios'
 import myAxios from '../app/api/axiosInstance'
 import GenerateHeaders from '../app/api/GenerateApiHeaders'
 
-interface UseAxiosProps {
+export interface UseAxiosProps {
   resourcePath: string
   HTTPMethod: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
   headers?: RawAxiosRequestHeaders
-  HTTPBody?: object
+  HTTPBody?: string
+  autoStart?: boolean
 }
 type loadingStateType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
-const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loadingStateType] => {
+const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loadingStateType, startFetch: () => void] => {
   const {
     resourcePath,
     HTTPMethod,
     headers,
-    HTTPBody
+    HTTPBody,
+    autoStart = true
   } = props
-
   const [result, setResult] = useState<T | null>(null)
   const [loadingState, setLoadingState] = useState<loadingStateType>('idle')
   const token = useSelector(selectToken)
+  const [reFectch, setReFetch] = useState<boolean>(autoStart)
+  const firstRun = useRef(autoStart)
   useEffect(() => {
-    if (token === null || typeof token === 'undefined') {
-      setLoadingState('failed')
-      setResult(null)
-    } else {
+    if (firstRun.current) {
       if (HTTPMethod === 'GET') {
         setLoadingState('loading')
         myAxios.get<T>(
@@ -47,8 +46,7 @@ const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loa
             setResult(null)
             setLoadingState('failed')
           })
-      }
-      if (HTTPMethod === 'POST') {
+      } else if (HTTPMethod === 'POST') {
         setLoadingState('loading')
         myAxios.post(
           resourcePath,
@@ -69,10 +67,9 @@ const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loa
             setLoadingState('failed')
           })
       }
-    }
-  }, [resourcePath])
-
-  return [result, loadingState]
+    } else firstRun.current = true
+  }, [reFectch])
+  return [result, loadingState, () => { setReFetch(prev => !prev) }]
 }
 
 export default useAxios

@@ -5,6 +5,12 @@ export const de = {
     password: 'passwort',
     login: 'anmeldung',
     logout: 'ausloggen',
-    back: 'zurück'
+    back: 'zurück',
+    autocompleteError: 'Bitte wählen Sie den korrekten Wert aus',
+    success: 'Erfolg',
+    apiError: 'Etwas ist schief gelaufen',
+    numberInputError: 'Verwenden Sie nur Zahlen',
+    deleteSuccess: 'Alle {{count}} Artikel gelöscht',
+    deleteError: 'Fehlgeschlagen'
   }
 }

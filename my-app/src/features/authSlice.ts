@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { type RootState } from '../app/store'
 import myAxios from '../app/api/axiosInstance'
-import { type LoginTokenResponse } from '../models/api/loginTokenResponse'
+import { type LoginTokenResponse } from '../models/api/LoginTokenResponse'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const md5 = require('md5')
 export const loginUser = createAsyncThunk(

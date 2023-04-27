@@ -2,7 +2,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
 import { type RootState } from '../app/store'
 import myAxios from '../app/api/axiosInstance'
-import { type ProductionLine } from '../models/api/ProductionLine'
 import { type AxiosResponse } from 'axios'
 import GenerateHeaders from '../app/api/GenerateApiHeaders'
 import { type DashboardData } from '../models/api/DashboardData'
