@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog } from 'react-agcobpmes-core'
 import { type KitCartRecord } from '../../models/api/KitCartRecord'
 import MyForm, { type InputField } from './MyForm'
@@ -17,28 +17,28 @@ interface MyAddNewFormProps {
 
 const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddNewFormProps): JSX.Element => {
   const { i18n } = useTranslation()
-  const [kitCartTypeList, kitCartTypeListLS] = useAxios<KitCartType[]>({
+  const [kitCartTypeList] = useAxios<KitCartType[]>({
     resourcePath: 'Administration/KitCart/GetKitCartTypeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [agvStationCodeList, agvStationCodeListLS] = useAxios<AvgStationCode[]>({
+  const [agvStationCodeList] = useAxios<AvgStationCode[]>({
     resourcePath: 'Administration/KitCart/GetAgvStationCodeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [preparationAreaCodeList, preparationAreaCodeListLS] = useAxios<PreparationAreaCode[]>({
+  const [preparationAreaCodeList] = useAxios<PreparationAreaCode[]>({
     resourcePath: 'Administration/KitCart/GetPreparationAreaCodeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [SupplyAreaList, SupplyAreaListLS] = useAxios<string[]>({
+  const [SupplyAreaList] = useAxios<string[]>({
     resourcePath: 'Administration/KitCart/GetSupplyAreaList/US10',
     HTTPMethod: 'GET',
     headers: {
@@ -51,18 +51,18 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
     fields = [
       {
         name: 'kitCartNo',
-        labelText: 'kitCartNo',
+        labelText: i18n.t('kitCartNo'),
         required: true,
         inputType: { type: 'text', defaultValue: editableData.kitCartNo }
       },
       {
         name: 'kitCartDescription',
-        labelText: 'kitCartDescription',
+        labelText: i18n.t('kitCartDescription'),
         inputType: { type: 'text', defaultValue: editableData.kitCartDescription }
       },
       {
         name: 'kitCartType',
-        labelText: 'kitCartType',
+        labelText: i18n.t('kitCartType'),
         inputType: {
           type: 'select',
           defaultValue: editableData.kitCartType.toString(),
@@ -72,7 +72,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'rackSize',
-        labelText: 'rackSize',
+        labelText: i18n.t('rackSize'),
         inputType: {
           type: 'number',
           defaultValue: editableData.rackSize
@@ -80,7 +80,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'linkedSupplyArea',
-        labelText: 'linkedSupplyArea',
+        labelText: i18n.t('linkedSupplyArea'),
         inputType: {
           type: 'autocomplete',
           defaultValue: editableData.linkedSupplyArea,
@@ -89,13 +89,13 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'unloadPoint',
-        labelText: 'unloadPoint',
+        labelText: i18n.t('unloadPoint'),
         readonly: false,
         inputType: { type: 'text', defaultValue: editableData.unloadPoint ?? '' }
       },
       {
         name: 'agvStationCode',
-        labelText: 'agvStationCode',
+        labelText: i18n.t('agvStationCode'),
         inputType: {
           type: 'select',
           defaultValue: editableData.agvStationCode,
@@ -104,7 +104,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'preparationAreaCode',
-        labelText: 'preparationAreaCode',
+        labelText: i18n.t('preparationAreaCode'),
         inputType: {
           type: 'select',
           defaultValue: editableData.preparationAreaCode,
@@ -113,7 +113,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'active',
-        labelText: 'active',
+        labelText: i18n.t('active'),
         inputType: {
           type: 'boolean',
           defaultValue: editableData.active
@@ -121,7 +121,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'printPickingList',
-        labelText: 'printPickingList',
+        labelText: i18n.t('printPickingList'),
         inputType: {
           type: 'boolean',
           defaultValue: editableData.printPickingList
@@ -129,7 +129,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       },
       {
         name: 'kittingOffset',
-        labelText: 'kittingOffset',
+        labelText: i18n.t('kittingOffset'),
         inputType: {
           type: 'number',
           defaultValue: editableData.kittingOffset
@@ -137,9 +137,9 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
       }
     ]
   }
-
+  const title = i18n.t('addNewItemFormText')
   return (
-    <Dialog title='form' open={isOpen} handleClose={() => { onRequestClose(false) }} maxWidth='md'>
+    <Dialog title={title} open={isOpen} handleClose={() => { onRequestClose(false) }} maxWidth='md'>
       {typeof fields !== 'undefined' &&
         <MyForm
           fields={fields}

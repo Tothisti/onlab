@@ -5,6 +5,7 @@ import AutoCompleteTextField from './AutoCompleteTextField'
 import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(() =>
   createStyles({
     form: {
@@ -202,10 +203,11 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
         return null
     }
   })
+  const { t } = useTranslation()
   return (
     <form onSubmit={formik.handleSubmit} className={classes.form}>
       {renderInputFields}
-      <Button type='submit' variant='contained'>save</Button>
+      <Button type='submit' variant='contained'>{t('save')}</Button>
     </form>
   )
 }

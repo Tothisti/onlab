@@ -7,9 +7,13 @@ import { useAppDispatch } from '../../app/store'
 import { getKitCartDataRows } from '../../features/kitCartMaintanceSlice'
 import { useTranslation } from 'react-i18next'
 import { useSnackbar } from 'notistack'
+import { Button } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+
 interface DeleteButtonProps {
   itemsForDelete: any[] | undefined
 }
+
 const DeleteButton: React.FC<DeleteButtonProps> = (props): JSX.Element => {
   const { itemsForDelete } = props
   const token = useSelector(selectToken)
@@ -43,7 +47,16 @@ const DeleteButton: React.FC<DeleteButtonProps> = (props): JSX.Element => {
         })
     }
   }
-  return (<button onClick={handleClick}>delete</button>)
+  return (
+    <Button
+      variant='contained'
+      color='primary'
+      onClick={handleClick}
+      startIcon={<DeleteIcon />}
+    >
+      {t('deleteButtonText')}
+    </Button>
+  )
 }
 
 export default DeleteButton

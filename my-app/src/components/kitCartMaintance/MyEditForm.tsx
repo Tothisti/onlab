@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog } from 'react-agcobpmes-core'
 import { type KitCartRecord } from '../../models/api/KitCartRecord'
 import MyForm, { type InputField } from './MyForm'
@@ -18,28 +18,28 @@ interface MyEditFormProps {
 
 const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFormProps): JSX.Element => {
   const { i18n } = useTranslation()
-  const [kitCartTypeList, kitCartTypeListLS] = useAxios<KitCartType[]>({
+  const [kitCartTypeList] = useAxios<KitCartType[]>({
     resourcePath: 'Administration/KitCart/GetKitCartTypeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [agvStationCodeList, agvStationCodeListLS] = useAxios<AvgStationCode[]>({
+  const [agvStationCodeList] = useAxios<AvgStationCode[]>({
     resourcePath: 'Administration/KitCart/GetAgvStationCodeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [preparationAreaCodeList, preparationAreaCodeListLS] = useAxios<PreparationAreaCode[]>({
+  const [preparationAreaCodeList] = useAxios<PreparationAreaCode[]>({
     resourcePath: 'Administration/KitCart/GetPreparationAreaCodeList',
     HTTPMethod: 'GET',
     headers: {
       language: i18n.language // lang !!!
     }
   })
-  const [SupplyAreaList, SupplyAreaListLS] = useAxios<string[]>({
+  const [SupplyAreaList] = useAxios<string[]>({
     resourcePath: 'Administration/KitCart/GetSupplyAreaList/US10',
     HTTPMethod: 'GET',
     headers: {
@@ -52,7 +52,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
     fields = [
       {
         name: 'kitCartNo',
-        labelText: 'kitCartNo',
+        labelText: i18n.t('kitCartNo'),
         readonly: true,
         inputType: { type: 'text', defaultValue: editableData.kitCartNo ?? '' },
         validation: (values: any) => {
@@ -62,16 +62,16 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'kitCartDescription',
-        labelText: 'kitCartDescription',
-        inputType: { type: 'text', defaultValue: editableData.kitCartDescription },
-        validation: (values: any) => {
-          if (values.firstname === 'teszt') { return { error: true, errorMessage: 'fdsfsd' } }
-          return { error: false }
-        }
+        labelText: i18n.t('kitCartDescription'),
+        inputType: { type: 'text', defaultValue: editableData.kitCartDescription }
+        // validation: (values: any) => {
+        //   if (values.firstname === 'teszt') { return { error: true, errorMessage: 'fdsfsd' } }
+        //   return { error: false }
+        // }
       },
       {
         name: 'kitCartType',
-        labelText: 'kitCartType',
+        labelText: i18n.t('kitCartType'),
         inputType: {
           type: 'select',
           defaultValue: editableData.kitCartType.toString(),
@@ -80,7 +80,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'rackSize',
-        labelText: 'rackSize',
+        labelText: i18n.t('rackSize'),
         inputType: {
           type: 'number',
           defaultValue: editableData.rackSize
@@ -88,7 +88,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'linkedSupplyArea',
-        labelText: 'linkedSupplyArea',
+        labelText: i18n.t('linkedSupplyArea'),
         inputType: {
           type: 'autocomplete',
           defaultValue: editableData.linkedSupplyArea,
@@ -97,13 +97,13 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'unloadPoint',
-        labelText: 'unloadPoint',
+        labelText: i18n.t('unloadPoint'),
         readonly: false,
         inputType: { type: 'text', defaultValue: editableData.unloadPoint ?? '' }
       },
       {
         name: 'agvStationCode',
-        labelText: 'agvStationCode',
+        labelText: i18n.t('agvStationCode'),
         inputType: {
           type: 'select',
           defaultValue: editableData.agvStationCode,
@@ -112,7 +112,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'preparationAreaCode',
-        labelText: 'preparationAreaCode',
+        labelText: i18n.t('preparationAreaCode'),
         inputType: {
           type: 'select',
           defaultValue: editableData.preparationAreaCode,
@@ -121,7 +121,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'active',
-        labelText: 'active',
+        labelText: i18n.t('active'),
         inputType: {
           type: 'boolean',
           defaultValue: editableData.active
@@ -129,7 +129,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'printPickingList',
-        labelText: 'printPickingList',
+        labelText: i18n.t('printPickingList'),
         inputType: {
           type: 'boolean',
           defaultValue: editableData.printPickingList
@@ -137,7 +137,7 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       },
       {
         name: 'kittingOffset',
-        labelText: 'kittingOffset',
+        labelText: i18n.t('kittingOffset'),
         inputType: {
           type: 'number',
           defaultValue: editableData.kittingOffset
@@ -145,9 +145,9 @@ const MyEditFrom = ({ isOpen, onRequestClose, editableData, onSubmit }: MyEditFo
       }
     ]
   }
-
+  const title = i18n.t('updateKitCartFormText')
   return (
-    <Dialog title='form' open={isOpen} handleClose={() => { onRequestClose(false) }} maxWidth='md'>
+    <Dialog title={title} open={isOpen} handleClose={() => { onRequestClose(false) }} maxWidth='md'>
       {typeof fields !== 'undefined' &&
         <MyForm
           fields={fields}

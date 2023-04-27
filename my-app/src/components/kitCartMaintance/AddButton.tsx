@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState } from 'react'
 import { type KitCartRecord } from '../../models/api/KitCartRecord'
 import { useTranslation } from 'react-i18next'
 import myAxios from '../../app/api/axiosInstance'
@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack'
 import { useAppDispatch } from '../../app/store'
 import { getKitCartDataRows } from '../../features/kitCartMaintanceSlice'
 import MyAddNewForm from './MyAddNewForm'
+import Button from '@material-ui/core/Button'
+import AddBoxIcon from '@material-ui/icons/AddBox'
 
 const AddButton: React.FC = (): JSX.Element => {
   const [selectedRow] = useState<KitCartRecord>({
@@ -28,10 +30,8 @@ const AddButton: React.FC = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar()
   const token = useSelector(selectToken)
   const dispatch = useAppDispatch()
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
   const handleSubmit = (values: any): void => {
-    console.log('before state')
-    console.log(values)
     // convert form values to API values
     if (values.preparationAreaCode === '') values.preparationAreaCode = null
     if (values.agvStationCode === '') values.agvStationCode = null
@@ -41,8 +41,6 @@ const AddButton: React.FC = (): JSX.Element => {
     if (values.kitCartType === '') values.kitCartType = null
     else values.kitCartType = parseInt(values.kitCartType)
 
-    console.log('after state')
-    console.log(values)
     // api post call
     myAxios.post(
       'Administration/KitCart/CreateKitCartRecord',
@@ -55,17 +53,24 @@ const AddButton: React.FC = (): JSX.Element => {
       }
     )
       .then((res) => {
-        if (res.status === 200) enqueueSnackbar(i18n.t('success'), { variant: 'success' })
+        if (res.status === 200) enqueueSnackbar(t('success'), { variant: 'success' })
         // setIsOpen(false)
         dispatch(getKitCartDataRows())
-          .then(() => { console.log('siker') })
-          .catch(() => { console.log('hiba') })
+          .then()
+          .catch(() => { enqueueSnackbar(t('serverError'), { variant: 'error' }) })
       })
-      .catch((e) => { enqueueSnackbar(i18n.t('apiError'), { variant: 'error' }) })
+      .catch((e) => { enqueueSnackbar(t('apiError'), { variant: 'error' }) })
   }
   return (
     <>
-      <button onClick={() => { setIsOpen(true) }}>add</button>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => { setIsOpen(true) }}
+        startIcon={<AddBoxIcon />}
+      >
+        {t('addButtonText')}
+      </Button>
       <MyAddNewForm
         editableData={selectedRow}
         isOpen={isOpen}

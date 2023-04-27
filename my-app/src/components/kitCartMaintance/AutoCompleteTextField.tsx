@@ -8,14 +8,14 @@ import { useTranslation } from 'react-i18next'
 const useStyles = makeStyles(() =>
   createStyles({
     rootDiv: {
-      width: '250px',
+      width: '350px',
       position: 'relative',
       display: 'inline-block',
       margin: '12px'
     },
     popper: {
       maxHeight: '200px',
-      width: '250px',
+      width: '350px',
       overflow: 'auto',
       position: 'absolute',
       zIndex: 9999,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(() =>
     },
     listItem: {
       cursor: 'pointer',
-      padding: '8px 0 8px 4px',
+      padding: '12px 0 12px 8px',
       '&:hover': {
         background: 'darkgreen'
       }
