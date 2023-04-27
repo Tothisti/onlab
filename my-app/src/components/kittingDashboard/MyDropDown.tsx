@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     formControl: {
       margin: theme.spacing(1),
-      minWidth: 180
+      minWidth: 250
     },
     selectEmpty: {
       marginTop: theme.spacing(2)
@@ -26,6 +26,7 @@ const CreateMenuItems = (productionLines: ProductionLine[]): JSX.Element[] => {
 
 interface DropDownProps {
   items: string[]
+  label: string
   onSelectedItem: (selectedItem: string) => void
   defaultValue?: string
 }
@@ -34,7 +35,8 @@ const MyDropDown: React.FC<DropDownProps> = (props: DropDownProps): JSX.Element 
   const {
     items,
     onSelectedItem,
-    defaultValue
+    defaultValue,
+    label
   } = props
 
   const classes = useStyles()
@@ -42,14 +44,13 @@ const MyDropDown: React.FC<DropDownProps> = (props: DropDownProps): JSX.Element 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
     onSelectedItem((event.target.value as string))
   }
-
   return (
     <FormControl variant="filled" className={classes.formControl}>
-      <InputLabel id="demo-simple-select-filled-label">ProductionLines</InputLabel>
+      <InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
-        defaultValue={defaultValue}
+        value={defaultValue}
         onChange={handleChange}
       >
         <MenuItem value="">

@@ -1,15 +1,21 @@
-import React, { type ReactElement, useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { DataGrid, type DataGridInterfaces } from 'react-agcobpmes-core'
-import { type KitCartRecord } from '../models/api/KitCartRecord'
 import { useTranslation } from 'react-i18next'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
-import MyEditFrom from '../components/kitCartMaintance/EditForm'
+import MyEditFrom from '../components/kitCartMaintance/MyEditForm'
+import myAxios from '../app/api/axiosInstance'
+import { useSelector } from 'react-redux'
+import { selectToken } from '../features/authSlice'
+import GenerateTokenHeader from '../app/api/GenerateApiHeaders'
+import { useSnackbar } from 'notistack'
+import DeleteButton from '../components/kitCartMaintance/DeleteButton'
+import AddButton from '../components/kitCartMaintance/AddButton'
+import { getKitCartDataRows, selectKitCartData } from '../features/kitCartMaintanceSlice'
 import { useAppDispatch } from '../app/store'
-import { setStateOfEditForm } from '../features/kitCartMaintanceSlice'
-import useAxios from '../hooks/useAxios'
+import { Box, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) =>
   createStyles(
@@ -21,35 +27,75 @@ const useStyles = makeStyles((theme) =>
         cursor: 'pointer',
         color: '#68EDCB !important',
         textDecoration: 'underline'
+      },
+      dataGridDiv: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'auto'
       }
     }
   )
 )
 
 const KittingMaintance: React.FC = () => {
-  const { i18n } = useTranslation()
+  const { t } = useTranslation()
   const classes = useStyles()
+  const { enqueueSnackbar } = useSnackbar()
   const [isOpen, setIsOpen] = useState(false)
-  const [columns, setColumns] = useState<DataGridInterfaces.IDataGridColumn[]>([
-    { name: 'kitCartNo', title: 'KitCartNo', filtering: true, width: 7, tooltip: true, draggable: false },
-    { name: 'kitCartDescription', title: 'KitCartDescription', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'kitCartType', title: 'KitCartType', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'rackSize', title: 'RackSize', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'linkedSupplyArea', title: 'LinkedSupplyArea', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'unloadPoint', title: 'UnloadPoint', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'agvStationCode', title: 'AgvStationCode', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'preparationAreaCode', title: 'PreparationAreaCode', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'active', title: 'Active', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'printPickingList', title: 'PrintPickingList', filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'kittingOffset', title: 'KittingOffset', filtering: true, width: 8, tooltip: true, draggable: false }
-    /* { name: 'kitCartDescription', title: 'Make (Car manufacturer)', type: 'clickable', align: 'center', wrap: true, inlineEditing: true, inlineEditingParams: { type: 'select', selection: [], clearOnSave: true } },
-    { name: 'kitCartType', title: 'Model', wrap: false, tooltip: true, copyable: true, width: '80px', autoWidth: true, realColumnIndex: 4 },
-    { name: 'rackSize', title: 'Year', sorting: false, inlineEditing: true, inlineEditingParams: { type: 'dateTime' } },
-    { name: 'like', title: 'Like', inlineEditing: true, inlineEditingParams: { type: 'checkbox' }, width: 5 },
-    { name: 'horsepower', title: 'HP', grouping: false, width: 5 } */
+  const [columns] = useState<DataGridInterfaces.IDataGridColumn[]>([
+    { name: 'kitCartNo', title: t('kitCartNo'), filtering: true, width: 7, tooltip: true, draggable: false },
+    { name: 'kitCartDescription', title: t('kitCartDescription'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'kitCartType', title: t('kitCartType'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'rackSize', title: t('rackSize'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'linkedSupplyArea', title: t('linkedSupplyArea'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'unloadPoint', title: t('unloadPoint'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'agvStationCode', title: t('agvStationCode'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'preparationAreaCode', title: t('preparationAreaCode'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'active', title: t('active'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'printPickingList', title: t('printPickingList'), filtering: true, width: 8, tooltip: true, draggable: false },
+    { name: 'kittingOffset', title: t('KittingOffset'), filtering: true, width: 8, tooltip: true, draggable: false }
   ])
+  const dispatch = useAppDispatch()
   const [selectedRow, setSelectedRow] = useState<any>()
-  const [rows, setRows] = useState<KitCartRecord[]>([])
+  const rows = useSelector(selectKitCartData)
+  const token = useSelector(selectToken)
+
+  const handleSubmit = (values: any): void => {
+    // convert form values to API values
+    if (values.preparationAreaCode === '') values.preparationAreaCode = null
+    if (values.agvStationCode === '') values.agvStationCode = null
+    if (values.rackSize === '') values.rackSize = null
+    if (values.kitCartDescription === '') values.kitCartDescription = null
+
+    if (values.kitCartType === '') values.kitCartType = null
+    else values.kitCartType = parseInt(values.kitCartType)
+
+    console.log(values)
+    // api post call
+    myAxios.post(
+      'Administration/KitCart/UpdateKitCartRecord',
+      JSON.stringify(values),
+      {
+        headers: {
+          ...GenerateTokenHeader(token),
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) enqueueSnackbar(t('success'), { variant: 'success' })
+        setIsOpen(false)
+        dispatch(getKitCartDataRows())
+          .then()
+          .catch(() => { console.log('error') })
+      })
+      .catch((e) => { enqueueSnackbar(t('apiError'), { variant: 'error' }) })
+  }
+
+  const [selectedRowsForDelete, setSelectedRowsForDelete] = useState<any[]>()
+  const handleSelection = (arrayOfSelection: any): any => {
+    setSelectedRowsForDelete(arrayOfSelection)
+  }
 
   const showDataOfRowOfClickedCell = useCallback((rowOfCell: any) => {
     alert(JSON.stringify(rowOfCell, null, 4))
@@ -59,7 +105,12 @@ const KittingMaintance: React.FC = () => {
     return classes.clickableCarMaker_cell
   }, [classes.clickableCarMaker_cell])
 
-  const [options, setOptions] = useState<DataGridInterfaces.IDataGridOptions>({
+  const handleClickOnEditIcon = (row: any): void => {
+    setIsOpen(true)
+    setSelectedRow(row)
+  }
+
+  const [options] = useState<DataGridInterfaces.IDataGridOptions>({
     cell: {
       clickable: {
         callback: showDataOfRowOfClickedCell,
@@ -69,25 +120,15 @@ const KittingMaintance: React.FC = () => {
     },
     row: {
       highlighted: {
-        condition: (car) => true
+        condition: (car: any) => true
       }
-      // clickable: {
-      //     callback: showPhotoOfClickedCar,
-      //     condition: () => true,
-      //     style: setClickableRowStyle,
-      // },
     },
     sorting: true,
     filtering: true,
     searching: true,
-    // grouping: {
-    //     default: [{ columnName: 'make' }],
-    //     dragDrop: true,
-    //     panel: true,
-    //     controls: true,
-    // },
     selection: {
-      multiple: true
+      multiple: true,
+      callback: handleSelection
     },
     resizable: true,
     maxHeight: '80vh',
@@ -96,32 +137,28 @@ const KittingMaintance: React.FC = () => {
       color: '#FF0000',
       defaultPageSize: 10
     },
-    // remote: {
-    //     parameters: remoteParameters,
-    //     changeParameters: setRemoteParameters
-    // },
     language: 'fi-FI',
     editColumn: {
       width: 7,
-      components: [(row: any) => <IconButton onClick={() => { setIsOpen(true); console.log(row); setSelectedRow(row) }}><EditIcon /></IconButton>]
+      components: [(row: any) => {
+        return (
+          <IconButton onClick={() => { handleClickOnEditIcon(row) }}>
+            <EditIcon />
+          </IconButton>
+        )
+      }]
     },
     onSave: (workBook: any) => {
       console.log(workBook)
     }
   })
 
-  const [result, loadingState] = useAxios<KitCartRecord[]>({
-    resourcePath: 'Administration/KitCart/GetKitCartRecords',
-    HTTPMethod: 'GET',
-    headers: {
-      language: i18n.language
-    }
-  })
-
   useEffect(() => {
-    if (loadingState === 'succeeded' && result !== null) setRows(result)
-  }, [loadingState])
-
+    dispatch(getKitCartDataRows())
+      .then(() => { console.log('siker') })
+      .catch(() => { console.log('hiba') })
+  }, [])
+  const selectedRowLenght = typeof selectedRowsForDelete === 'undefined' ? 0 : selectedRowsForDelete.length
   return (
     <Grid
       container
@@ -129,21 +166,38 @@ const KittingMaintance: React.FC = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'auto'
-      }}>
+      <Grid item style={{ width: '100%', padding: '0 12px 0 12px' }}>
+        <Box
+          display="flex"
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Typography>
+            {`${selectedRowLenght} ${t('selectedRowLabelText')}`}
+          </Typography>
+          <Box
+            display='flex'
+            style={{ gap: '10px' }}
+          >
+            <AddButton />
+            <DeleteButton
+              itemsForDelete={selectedRowsForDelete}
+            />
+          </Box>
+        </Box>
+      </Grid>
+      <div className={classes.dataGridDiv}>
         <DataGrid
-          rows={rows}
+          rows={rows ?? []}
           columns={columns}
           options={options}
         />
       </div>
       <MyEditFrom
+        editableData={selectedRow}
         isOpen={isOpen}
-        onRequestClose={setIsOpen}
-        EditableData={selectedRow}
+        onRequestClose={() => { setIsOpen(false) }}
+        onSubmit={handleSubmit}
       />
     </Grid>
   )

@@ -1,18 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { type DashboardData } from '../../models/api/DashboardData'
 import DasboardDataMatrix, { type Column, type Row } from './dataTable/DashboardDataMatrix'
 import { useSelector } from 'react-redux'
-import { selectPrepArea, selectProdLine } from '../../features/dashboardSlice'
-import useAxios from '../../hooks/useAxios'
+import { GetDashboardData, selectDashboardData, selectPrepArea, selectProdLine, selectStatus } from '../../features/dashboardSlice'
 import { CircularProgress } from '@material-ui/core'
-
-const MapApiDataToCols = (data: DashboardData[] | null): Column[] => {
-  if (data === null || data.length === 0) return []
-  const res: Column[] = data[0].workCenters?.map((wc) => {
-    return ({ field: wc.workCenter, position: wc.position })
-  })
-  return [{ field: 'order', position: -99 }, ...res]
-}
+import { useTranslation } from 'react-i18next'
+import { useAppDispatch } from '../../app/store'
 
 const MapApiDataToRows = (data: DashboardData[] | null): Row[] => {
   if (data === null || data.length === 0) return []
@@ -39,24 +32,30 @@ const MapApiDataToRows = (data: DashboardData[] | null): Row[] => {
 const MatrixPanel: React.FC = () => {
   const selectedProdLine = useSelector(selectProdLine)
   const selectedPrepArea = useSelector(selectPrepArea)
-
-  const prodLine = selectedProdLine ?? ''
-  const query = selectedPrepArea !== null
-    ? `?PreparationArea=${selectedPrepArea}`
-    : ''
-  const [matrixData, matrixDataLoadingState] = useAxios<DashboardData[]>({
-    resourcePath: 'AssemblyManufacturing/Kitting/KittingDashboard/GetDashboardData/US10/' + prodLine + query,
-    HTTPMethod: 'GET'
-  })
+  const matrixData = useSelector(selectDashboardData)
+  const matrixDataLoadingState = useSelector(selectStatus)
+  const dispatch = useAppDispatch()
+  const { t } = useTranslation()
+  const MapApiDataToCols = (data: DashboardData[] | null): Column[] => {
+    if (data === null || data.length === 0) return []
+    const res: Column[] = data[0].workCenters?.map((wc) => {
+      return ({ field: wc.workCenter, position: wc.position })
+    })
+    return [{ field: t('order'), position: -99 }, ...res]
+  }
   let matrix = <CircularProgress />
-
+  useEffect(() => {
+    dispatch(GetDashboardData())
+      .then()
+      .catch(() => { console.log('hiba') })
+  }, [selectedProdLine, selectedPrepArea])
   if (matrixDataLoadingState === 'succeeded' && matrixData !== null) {
     const rows = MapApiDataToRows(matrixData)
     const cols = MapApiDataToCols(matrixData)
     matrix = <DasboardDataMatrix rows={rows} columns={cols} />
   }
-  if (matrixDataLoadingState === 'failed') matrix = <div>Error</div>
-
+  if (matrixDataLoadingState === 'failed') matrix = <div>{t('apiError')}</div>
+  if (matrixData?.length === 0) matrix = <div>{t('nodata')}</div>
   return matrix
 }
 

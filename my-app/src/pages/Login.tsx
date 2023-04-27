@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import { useTranslation } from 'react-i18next'
-import LanguageSwitcherPanel from '../components/general/LanguageSwitcherPanel'
 import { useSelector } from 'react-redux'
 import { clearStatus, loginUser, selectUser } from '../features/authSlice'
 import { useNavigate } from 'react-router'
@@ -57,7 +56,6 @@ const Login: React.FC<WithStyles<typeof styles>> = (props: WithStyles<typeof sty
 
   return (
     <Paper className={classes.loginPanel} elevation={5}>
-      <LanguageSwitcherPanel />
       <form className={classes.form}>
         <TextField
           className={classes.textField}

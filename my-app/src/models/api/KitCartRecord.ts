@@ -1,13 +1,13 @@
 export interface KitCartRecord {
   kitCartNo: string | null
   kitCartDescription: string | null
-  kitCartType: 1
-  rackSize: string | null
-  linkedSupplyArea: string
+  kitCartType: number
+  rackSize: number
+  linkedSupplyArea: string | null
   unloadPoint: string
   agvStationCode: string | null
   preparationAreaCode: string | null
   active: boolean
-  printPickingList: boolean | null
+  printPickingList: boolean
   kittingOffset: number
 }

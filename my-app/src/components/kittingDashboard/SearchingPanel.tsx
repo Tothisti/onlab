@@ -24,9 +24,10 @@ const SearchingPanel: React.FC = () => {
   if (prodLineLoadingState === 'succeeded' && prodLineData !== null) {
     prodLineDropDown = (
       <MyDropDown
+        label={i18n.t('prodLine')}
         items={prodLineData.map((item) => item.productionLineCode)}
-        onSelectedItem={ (selectedItem) => { dispatch(selectProductionLine(selectedItem)) } }
-        defaultValue={selectedProdLine as string}
+        onSelectedItem={(selectedItem) => { dispatch(selectProductionLine(selectedItem)) }}
+        defaultValue={selectedProdLine}
       />)
   }
 
@@ -42,9 +43,10 @@ const SearchingPanel: React.FC = () => {
   if (prepAreaLoadingState === 'succeeded' && prepAreaData !== null) {
     prepAreaDropDown = (
       <MyDropDown
+        label={i18n.t('preparationArea')}
         items={prepAreaData.map((item) => item.areaCode)}
-        onSelectedItem={(selectedItem) => { dispatch(selectPreparationArea(selectedItem)) } }
-        defaultValue={selectedPrepArea as string}
+        onSelectedItem={(selectedItem) => { dispatch(selectPreparationArea(selectedItem)) }}
+        defaultValue={selectedPrepArea}
       />)
   }
   return (

@@ -39,6 +39,9 @@ let theme = createTheme({
       fontSize: 20,
       fontWeight: 400
     },
+    h4: {
+      fontSize: '0.8rem'
+    },
     body1: {
       fontSize: 18,
       fontWeight: 400
