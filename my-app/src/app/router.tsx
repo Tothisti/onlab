@@ -5,7 +5,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import { ProtectedRoute } from '../components/auth/ProtectedRoute'
 import HomeLayout from '../components/general/HomeLayout'
 import KittingDashboard from '../pages/KittingDashboard'
-import KittingMaintance from '../pages/KitCartMaintance'
+import KittingMaintance from '../pages/KitcartMaintance'
 import Page from '../components/general/Page'
 
 const router = createBrowserRouter(
