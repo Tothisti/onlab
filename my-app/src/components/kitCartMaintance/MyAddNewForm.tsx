@@ -47,7 +47,7 @@ const MyAddNewForm = ({ isOpen, onRequestClose, editableData, onSubmit }: MyAddN
   })
   let fields: InputField[] | undefined
 
-  if (typeof editableData !== 'undefined') {
+  if (editableData) {
     fields = [
       {
         name: 'kitCartNo',

@@ -8,6 +8,22 @@ import KittingDashboard from '../pages/KittingDashboard'
 import KittingMaintance from '../pages/KitcartMaintance'
 import Page from '../components/general/Page'
 
+const CreateProtectedRoute = (child: JSX.Element): JSX.Element => {
+  return (
+    <ProtectedRoute>
+      {child}
+    </ProtectedRoute>
+  )
+}
+
+const CreatePageWithTitle = (title: string, child: JSX.Element): JSX.Element => {
+  return (
+    <Page title={title}>
+      {child}
+    </Page>
+  )
+}
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route
@@ -16,39 +32,43 @@ const router = createBrowserRouter(
       <Route
         path='/'
         element={(
-          <ProtectedRoute>
-            <Page title='Home'>
+          CreateProtectedRoute(
+            CreatePageWithTitle(
+              'Home',
               <Home />
-            </Page>
-          </ProtectedRoute>
+            )
+          )
         )}
       />
       <Route
         path='/login'
         element={
-          <Page title='Login'>
+          CreatePageWithTitle(
+            'Login',
             <Login />
-          </Page>
+          )
         }
       />
       <Route
         path='/kitting-dashboard'
         element={(
-          <ProtectedRoute>
-            <Page title='Dashboard'>
+          CreateProtectedRoute(
+            CreatePageWithTitle(
+              'Dashboard',
               <KittingDashboard />
-            </Page>
-          </ProtectedRoute>
+            )
+          )
         )}
       />
       <Route
         path='/kitting-maintance'
         element={(
-          <ProtectedRoute>
-            <Page title='Maintance'>
+          CreateProtectedRoute(
+            CreatePageWithTitle(
+              'Maintance',
               <KittingMaintance />
-            </Page>
-          </ProtectedRoute>
+            )
+          )
         )}
       />
     </Route>

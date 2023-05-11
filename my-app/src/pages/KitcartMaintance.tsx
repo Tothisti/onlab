@@ -16,6 +16,7 @@ import AddButton from '../components/kitCartMaintance/AddButton'
 import { getKitCartDataRows, selectKitCartData } from '../features/kitCartMaintanceSlice'
 import { useAppDispatch } from '../app/store'
 import { Box, Typography } from '@material-ui/core'
+import { GetCorrectLanguageFormat } from '../app/i18/i18n'
 
 const useStyles = makeStyles((theme) =>
   createStyles(
@@ -43,23 +44,23 @@ const KittingMaintance: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar()
   const [isOpen, setIsOpen] = useState(false)
   const [columns] = useState<DataGridInterfaces.IDataGridColumn[]>([
-    { name: 'kitCartNo', title: t('kitCartNo'), filtering: true, width: 7, tooltip: true, draggable: false },
-    { name: 'kitCartDescription', title: t('kitCartDescription'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'kitCartType', title: t('kitCartType'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'rackSize', title: t('rackSize'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'linkedSupplyArea', title: t('linkedSupplyArea'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'unloadPoint', title: t('unloadPoint'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'agvStationCode', title: t('agvStationCode'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'preparationAreaCode', title: t('preparationAreaCode'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'active', title: t('active'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'printPickingList', title: t('printPickingList'), filtering: true, width: 8, tooltip: true, draggable: false },
-    { name: 'kittingOffset', title: t('KittingOffset'), filtering: true, width: 8, tooltip: true, draggable: false }
+    { name: 'kitCartNo', title: t('kitCartNo'), filtering: true, width: 7, tooltip: true },
+    { name: 'kitCartDescription', title: t('kitCartDescription'), filtering: true, width: 8, tooltip: true },
+    { name: 'kitCartType', title: t('kitCartType'), filtering: true, width: 8, tooltip: true },
+    { name: 'rackSize', title: t('rackSize'), filtering: true, width: 8, tooltip: true },
+    { name: 'linkedSupplyArea', title: t('linkedSupplyArea'), filtering: true, width: 8, tooltip: true },
+    { name: 'unloadPoint', title: t('unloadPoint'), filtering: true, width: 8, tooltip: true },
+    { name: 'agvStationCode', title: t('agvStationCode'), filtering: true, width: 8, tooltip: true },
+    { name: 'preparationAreaCode', title: t('preparationAreaCode'), filtering: true, width: 8, tooltip: true },
+    { name: 'active', title: t('active'), filtering: true, width: 8, tooltip: true },
+    { name: 'printPickingList', title: t('printPickingList'), filtering: true, width: 8, tooltip: true },
+    { name: 'kittingOffset', title: t('KittingOffset'), filtering: true, width: 8, tooltip: true }
   ])
   const dispatch = useAppDispatch()
   const [selectedRow, setSelectedRow] = useState<any>()
   const rows = useSelector(selectKitCartData)
   const token = useSelector(selectToken)
-
+  const { i18n } = useTranslation()
   const handleSubmit = (values: any): void => {
     // convert form values to API values
     if (values.preparationAreaCode === '') values.preparationAreaCode = null
@@ -70,7 +71,6 @@ const KittingMaintance: React.FC = () => {
     if (values.kitCartType === '') values.kitCartType = null
     else values.kitCartType = parseInt(values.kitCartType)
 
-    console.log(values)
     // api post call
     myAxios.post(
       'Administration/KitCart/UpdateKitCartRecord',
@@ -92,7 +92,7 @@ const KittingMaintance: React.FC = () => {
       .catch((e) => { enqueueSnackbar(t('apiError'), { variant: 'error' }) })
   }
 
-  const [selectedRowsForDelete, setSelectedRowsForDelete] = useState<any[]>()
+  const [selectedRowsForDelete, setSelectedRowsForDelete] = useState<any[]>([])
   const handleSelection = (arrayOfSelection: any): any => {
     setSelectedRowsForDelete(arrayOfSelection)
   }
@@ -109,7 +109,6 @@ const KittingMaintance: React.FC = () => {
     setIsOpen(true)
     setSelectedRow(row)
   }
-
   const [options] = useState<DataGridInterfaces.IDataGridOptions>({
     cell: {
       clickable: {
@@ -137,7 +136,7 @@ const KittingMaintance: React.FC = () => {
       color: '#FF0000',
       defaultPageSize: 10
     },
-    language: 'fi-FI',
+    language: GetCorrectLanguageFormat(i18n.language),
     editColumn: {
       width: 7,
       components: [(row: any) => {
@@ -155,25 +154,25 @@ const KittingMaintance: React.FC = () => {
 
   useEffect(() => {
     dispatch(getKitCartDataRows())
-      .then(() => { console.log('siker') })
       .catch(() => { console.log('hiba') })
   }, [])
-  const selectedRowLenght = typeof selectedRowsForDelete === 'undefined' ? 0 : selectedRowsForDelete.length
+
+  const selectedRowLength = typeof selectedRowsForDelete === 'undefined' ? 0 : selectedRowsForDelete.length
   return (
     <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
+      container={true}
+      direction='column'
+      justifyContent='center'
+      alignItems='center'
     >
-      <Grid item style={{ width: '100%', padding: '0 12px 0 12px' }}>
+      <Grid item={true} style={{ width: '100%', padding: '0 12px 0 12px' }}>
         <Box
-          display="flex"
+          display='flex'
           justifyContent='space-between'
           alignItems='center'
         >
           <Typography>
-            {`${selectedRowLenght} ${t('selectedRowLabelText')}`}
+            {`${selectedRowLength} ${t('selectedRowLabelText')}`}
           </Typography>
           <Box
             display='flex'

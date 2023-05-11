@@ -1,25 +1,28 @@
 import { Button } from '@material-ui/core'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { logoutUser } from '../../features/authSlice'
+import MyCustomButton from '../general/MyCustomButton'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const LogoutButton: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const onClickHandler = (): void => {
+  const onClickHandler = useCallback((): void => {
     dispatch(logoutUser())
-  }
+  }, [])
 
   return (
-        <Button
-            variant='contained'
+        <MyCustomButton
+            variant='outlined'
             color='primary'
+            startIcon={<ExitToAppIcon />}
             onClick={onClickHandler}
         >
             {t('logout')}
-        </Button>)
+        </MyCustomButton>)
 }
 
 export default LogoutButton

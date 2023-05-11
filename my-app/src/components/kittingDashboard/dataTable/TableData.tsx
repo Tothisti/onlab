@@ -51,7 +51,6 @@ const returnStateClassName = (state: string): stateClassNames => {
 }
 
 const TableData = ({ field }: Props): JSX.Element => {
-  console.log(field)
   const classes = useStyles()
 
   const createtableDataWithColor = (data: FieldData | string): JSX.Element => {

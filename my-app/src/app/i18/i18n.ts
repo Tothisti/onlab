@@ -23,3 +23,13 @@ export const lngs = {
   en: { nativeName: 'English' },
   de: { nativeName: 'Deutsch' }
 }
+
+const languageFormatObj = {
+  en: 'en-US',
+  de: 'de-DE'
+}
+
+type languageFormatType = 'en-US' | 'en-GB' | 'fi-FI' | 'es-ES' | 'de-DE' | undefined
+export const GetCorrectLanguageFormat = (lng: string): languageFormatType => {
+  return (languageFormatObj as any)[lng]
+}

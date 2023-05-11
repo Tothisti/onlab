@@ -6,7 +6,7 @@ interface Props {
   title: string
 }
 
-const Page: React.FC<Props> = ({ children, title }): JSX.Element => {
+const Page = ({ children, title }: Props): JSX.Element => {
   useEffect(() => {
     document.title = title
   })

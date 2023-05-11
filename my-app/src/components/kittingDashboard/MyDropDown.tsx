@@ -18,12 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const CreateMenuItems = (productionLines: ProductionLine[]): JSX.Element[] => {
-  return productionLines.map((productionLine, i) => {
-    return <MenuItem key={i} value={productionLine.productionLineCode}>{productionLine.productionLineCode}</MenuItem>
-  })
-}
-
 interface DropDownProps {
   items: string[]
   label: string
@@ -45,15 +39,15 @@ const MyDropDown: React.FC<DropDownProps> = (props: DropDownProps): JSX.Element 
     onSelectedItem((event.target.value as string))
   }
   return (
-    <FormControl variant="filled" className={classes.formControl}>
-      <InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>
+    <FormControl variant='filled' className={classes.formControl}>
+      <InputLabel id='demo-simple-select-filled-label'>{label}</InputLabel>
       <Select
-        labelId="demo-simple-select-filled-label"
-        id="demo-simple-select-filled"
+        labelId='demo-simple-select-filled-label'
+        id='demo-simple-select-filled'
         value={defaultValue}
         onChange={handleChange}
       >
-        <MenuItem value="">
+        <MenuItem value=''>
           <em>None</em>
         </MenuItem>
         {items !== null && typeof items !== 'undefined'

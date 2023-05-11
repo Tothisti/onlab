@@ -13,23 +13,30 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '0px 20px'
+  },
+  buttonContainer: {
+    display: 'flex',
+    gap: '10px'
   }
 })
+
+const CheckUserIsLoggedIn = (user: string | null): JSX.Element | undefined => {
+  if (user !== null) {
+    return <LogoutButton />
+  }
+}
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles()
   const user = useSelector(selectUser)
-  let logout
-  if (user !== null) {
-    logout = <LogoutButton />
-  }
 
   return (
     <nav className={classes.navbar}>
-      <div></div>
-      <div><LanguageSwitcherPanel/></div>
-      <BackButton />
-      {logout}
+      <div><LanguageSwitcherPanel /></div>
+      <div className={classes.buttonContainer}>
+        <BackButton />
+        {CheckUserIsLoggedIn(user)}
+      </div>
     </nav>
   )
 }
