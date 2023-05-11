@@ -47,12 +47,6 @@ const filterValues = (filterText: string | undefined, list: JSX.Element[] | unde
   const searchVar = typeof filterText === 'undefined'
     ? ''
     : filterText
-  // with regex
-  // const regex = new RegExp(`^${searchVar}`, 'i')
-  // const res = _.filter(list, item => {
-  //   // console.log(regex.test(item.props.children.props.primary))
-  //   return regex.test(item.props.children.props.primary)
-  // })
   const res = _.filter(list, (item) => {
     return (item.props.children as string).startsWith(searchVar)
   })
@@ -123,8 +117,8 @@ const AutoCompleteTextField = (props: AutoCompleteTextFieldProps): JSX.Element =
           onChange={handleChange}
           onClick={handleClickOnTextField}
           variant='outlined'
-          type="search"
-          fullWidth
+          type='search'
+          fullWidth={true}
           error={filteredList?.length === 0}
           helperText={filteredList?.length === 0 ? t('autocompleteError') : ''}
         />

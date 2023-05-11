@@ -7,22 +7,22 @@ import { CircularProgress } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from '../../app/store'
 
-const MapApiDataToRows = (data: DashboardData[] | null): Row[] => {
-  if (data === null || data.length === 0) return []
-  const res: Row[] = data.map((item) => {
-    const fields = item.workCenters.map((order) => {
+const MapDashboardDataToRows = (dashboardData: DashboardData[] | null): Row[] => {
+  if (!dashboardData) return []
+  const res: Row[] = dashboardData.map((data) => {
+    const fields = data.workCenters.map((order) => {
       return ({
         [order.workCenter]: order.kitCarts.map((kitCart) => {
           return { value: kitCart.description, status: kitCart.status }
         })
       })
     })
-    const f = fields.reduce((result, current) => Object.assign(result, current), {})
+    const fieldsObject = fields.reduce((result, current) => Object.assign(result, current), {})
     return ({
-      position: item.orderPosition,
+      position: data.orderPosition,
       fields: {
-        order: item.vin ?? 'no vin',
-        ...f
+        order: data.vin ?? 'no vin',
+        ...fieldsObject
       }
     })
   })
@@ -36,27 +36,35 @@ const MatrixPanel: React.FC = () => {
   const matrixDataLoadingState = useSelector(selectStatus)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const MapApiDataToCols = (data: DashboardData[] | null): Column[] => {
+
+  useEffect(() => {
+    dispatch(GetDashboardData())
+      .catch(() => { console.log('hiba') })
+  }, [selectedProdLine, selectedPrepArea])
+
+  const MapDashboardDataToCols = (data: DashboardData[] | null): Column[] => {
     if (data === null || data.length === 0) return []
     const res: Column[] = data[0].workCenters?.map((wc) => {
       return ({ field: wc.workCenter, position: wc.position })
     })
-    return [{ field: t('order'), position: -99 }, ...res]
+    const orderText = t('order')
+    return [{ field: 'order', position: -999, fieldText: orderText }, ...res]
   }
-  let matrix = <CircularProgress />
-  useEffect(() => {
-    dispatch(GetDashboardData())
-      .then()
-      .catch(() => { console.log('hiba') })
-  }, [selectedProdLine, selectedPrepArea])
-  if (matrixDataLoadingState === 'succeeded' && matrixData !== null) {
-    const rows = MapApiDataToRows(matrixData)
-    const cols = MapApiDataToCols(matrixData)
-    matrix = <DasboardDataMatrix rows={rows} columns={cols} />
+
+  const GetMatrixComponent = (): JSX.Element => {
+    if (matrixDataLoadingState === 'succeeded' && matrixData !== null) {
+      const rows = MapDashboardDataToRows(matrixData)
+      const cols = MapDashboardDataToCols(matrixData)
+      return <DasboardDataMatrix rows={rows} columns={cols} />
+    }
+    if (matrixDataLoadingState === 'loading') {
+      return <CircularProgress />
+    }
+    if (matrixDataLoadingState === 'failed') return <div>{t('apiError')}</div>
+    return <div>{t('nodata')}</div>
   }
-  if (matrixDataLoadingState === 'failed') matrix = <div>{t('apiError')}</div>
-  if (matrixData?.length === 0) matrix = <div>{t('nodata')}</div>
-  return matrix
+
+  return GetMatrixComponent()
 }
 
 export default MatrixPanel

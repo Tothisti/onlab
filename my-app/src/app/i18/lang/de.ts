@@ -8,6 +8,7 @@ export const de = {
     back: 'zurück',
     autocompleteError: 'Bitte wählen Sie den korrekten Wert aus',
     success: 'Erfolg',
+    'Username or password is incorrect': 'Benutzername oder Passwort sind falsch',
     apiError: 'Etwas ist schief gelaufen',
     numberInputError: 'Verwenden Sie nur Zahlen',
     deleteSuccess: 'Alle {{count}} Artikel gelöscht',

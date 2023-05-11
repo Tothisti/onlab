@@ -6,13 +6,13 @@ import { type LoginTokenResponse } from '../models/api/LoginTokenResponse'
 const md5 = require('md5')
 export const loginUser = createAsyncThunk(
   'login/loginUser',
-  async (loginData: { usern: string, passw: string }) => {
+  async (loginData: { username: string, password: string }) => {
     let postBody = {}
-    if (loginData.usern !== '') {
+    if (loginData.username !== '') {
       postBody = {
         id: 'string',
-        username: loginData.usern,
-        password: md5(loginData.passw),
+        username: loginData.username,
+        password: md5(loginData.password),
         token: 'string'
       }
     }

@@ -1,16 +1,29 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import Paper from '@material-ui/core/Paper'
+import { Avatar, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import DashboardIcon from '@material-ui/icons/Dashboard'
+import DnsIcon from '@material-ui/icons/Dns'
+import MyLinkComponent from '../components/general/MyLinkComponent'
+import Box from '@material-ui/core/Box'
+import MenuIcon from '@material-ui/icons/Menu'
 
-const useStyles = makeStyles((_theme) =>
+const useStyles = makeStyles((theme) =>
   createStyles(
     {
       loginPanel: {
-        height: '500px',
-        width: '500px'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        height: '70vh',
+        maxWidth: '500px',
+        maxHeight: '500px',
+        minHeight: '300px',
+        margin: '16px',
+        padding: '16px'
       },
       form: {
         display: 'flex',
@@ -20,6 +33,13 @@ const useStyles = makeStyles((_theme) =>
       },
       textField: {
         width: '30ch'
+      },
+      menuBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: '12px',
+        gap: '12px'
       }
     }
   )
@@ -30,20 +50,38 @@ const Menu: React.FC = () => {
   const { t } = useTranslation()
   return (
     <Paper className={classes.loginPanel} elevation={5}>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
+      <Box
+        className={classes.menuBox}
       >
+        <Avatar>
+          <MenuIcon />
+        </Avatar>
         <Typography
           variant='h1'
         >
           {t('menu')}
         </Typography>
-        <Link to={'/kitting-dashboard'}>{t('kittingDashboard')}</Link>
-        <Link to={'/kitting-maintance'}>{t('kitCartMaintance')}</Link>
-      </Grid>
+      </Box>
+      <MenuList>
+        <MenuItem>
+          <ListItemIcon>
+            <DashboardIcon fontSize='small' />
+          </ListItemIcon>
+          <MyLinkComponent
+            to={'/kitting-dashboard'}>
+            {t('kittingDashboard')}
+          </MyLinkComponent>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <DnsIcon fontSize='small' />
+          </ListItemIcon>
+          <MyLinkComponent
+            to={'/kitting-maintance'}>
+            {t('kitCartMaintance')}
+          </MyLinkComponent>
+        </MenuItem>
+      </MenuList>
     </Paper>
   )
 }

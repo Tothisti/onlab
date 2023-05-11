@@ -1,20 +1,27 @@
-import React from 'react'
-import { Button } from '@material-ui/core'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import MyCustomButton from './MyCustomButton'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const BackButton: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
 
   const navigate = useNavigate()
+
+  const onClickHandler = useCallback(() => {
+    navigate(-1)
+  }, [])
   return (
-    <Button
+    <MyCustomButton
       variant='contained'
       color='primary'
-      onClick={() => { navigate(-1) } }
+      size='small'
+      startIcon={<ArrowBackIcon />}
+      onClick={onClickHandler}
     >
       {t('back')}
-    </Button>
+    </MyCustomButton>
   )
 }
 

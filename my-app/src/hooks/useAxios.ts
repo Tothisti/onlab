@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../features/authSlice'
 import { type RawAxiosRequestHeaders } from 'axios'
 import myAxios from '../app/api/axiosInstance'
-import GenerateHeaders from '../app/api/GenerateApiHeaders'
 
 export interface UseAxiosProps {
   resourcePath: string
@@ -21,7 +18,6 @@ const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loa
   } = props
   const [result, setResult] = useState<T | null>(null)
   const [loadingState, setLoadingState] = useState<loadingStateType>('idle')
-  const token = useSelector(selectToken)
   useEffect(() => {
     if (HTTPMethod === 'GET') {
       setLoadingState('loading')
@@ -29,7 +25,6 @@ const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loa
         resourcePath,
         {
           headers: {
-            ...GenerateHeaders(token),
             ...headers
           }
         })
@@ -49,7 +44,6 @@ const useAxios = <T>(props: UseAxiosProps): [result: T | null, loadingState: loa
         ,
         {
           headers: {
-            ...GenerateHeaders(token),
             ...headers
           }
         })

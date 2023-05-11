@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 
 const SearchingPanel: React.FC = () => {
   const dispatch = useAppDispatch()
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const selectedProdLine = useSelector(selectProdLine)
   const selectedPrepArea = useSelector(selectPrepArea)
   const [prodLineData, prodLineLoadingState] = useAxios<ProductionLine[]>({
@@ -24,7 +24,7 @@ const SearchingPanel: React.FC = () => {
   if (prodLineLoadingState === 'succeeded' && prodLineData !== null) {
     prodLineDropDown = (
       <MyDropDown
-        label={i18n.t('prodLine')}
+        label={t('prodLine')}
         items={prodLineData.map((item) => item.productionLineCode)}
         onSelectedItem={(selectedItem) => { dispatch(selectProductionLine(selectedItem)) }}
         defaultValue={selectedProdLine}
@@ -43,7 +43,7 @@ const SearchingPanel: React.FC = () => {
   if (prepAreaLoadingState === 'succeeded' && prepAreaData !== null) {
     prepAreaDropDown = (
       <MyDropDown
-        label={i18n.t('preparationArea')}
+        label={t('preparationArea')}
         items={prepAreaData.map((item) => item.areaCode)}
         onSelectedItem={(selectedItem) => { dispatch(selectPreparationArea(selectedItem)) }}
         defaultValue={selectedPrepArea}

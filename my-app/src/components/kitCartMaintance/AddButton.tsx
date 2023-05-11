@@ -2,9 +2,6 @@ import React, { useState } from 'react'
 import { type KitCartRecord } from '../../models/api/KitCartRecord'
 import { useTranslation } from 'react-i18next'
 import myAxios from '../../app/api/axiosInstance'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../../features/authSlice'
-import GenerateTokenHeader from '../../app/api/GenerateApiHeaders'
 import { useSnackbar } from 'notistack'
 import { useAppDispatch } from '../../app/store'
 import { getKitCartDataRows } from '../../features/kitCartMaintanceSlice'
@@ -28,7 +25,6 @@ const AddButton: React.FC = (): JSX.Element => {
   })
   const [isOpen, setIsOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const token = useSelector(selectToken)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const handleSubmit = (values: any): void => {
@@ -44,19 +40,12 @@ const AddButton: React.FC = (): JSX.Element => {
     // api post call
     myAxios.post(
       'Administration/KitCart/CreateKitCartRecord',
-      JSON.stringify(values),
-      {
-        headers: {
-          ...GenerateTokenHeader(token),
-          'Content-Type': 'application/json'
-        }
-      }
+      JSON.stringify(values)
     )
       .then((res) => {
         if (res.status === 200) enqueueSnackbar(t('success'), { variant: 'success' })
-        // setIsOpen(false)
+        setIsOpen(false)
         dispatch(getKitCartDataRows())
-          .then()
           .catch(() => { enqueueSnackbar(t('serverError'), { variant: 'error' }) })
       })
       .catch((e) => { enqueueSnackbar(t('apiError'), { variant: 'error' }) })

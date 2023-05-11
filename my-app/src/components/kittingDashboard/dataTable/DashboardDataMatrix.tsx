@@ -1,8 +1,9 @@
 import React from 'react'
 import Box from '@material-ui/core/Box'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import TableCol from './TableCol'
-import TableData from './TableData'
+import _ from 'lodash'
+import DataMatrixHeader from './DataMatrixHeader'
+import DataMatrixBody from './DataMatrixBody'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -18,89 +19,48 @@ const useStyles = makeStyles(() =>
   })
 )
 
-interface Compare {
-  position?: number | null
-}
-
-export interface Column extends Compare {
-  field: string
-  style?: React.CSSProperties
-}
-
 export interface FieldData {
   status: number
   value: string
 }
 
-interface IRow { fields: Record<string, string | FieldData | FieldData[]> }
+export interface Row {
+  fields: Record<string, string | FieldData | FieldData[]>
+  position?: number | null
+}
 
-export interface Row extends Compare, IRow {}
+export interface Column {
+  field: string
+  fieldText?: string
+  style?: React.CSSProperties
+  position?: number | null
+}
 
-interface Props {
+const OrderItemsByPosition = <T extends Row | Column>(list: T[]): T[] => {
+  const temp = list.slice()
+  return _.sortBy(temp, ['position'])
+}
+
+interface DasboardDataMatrixProps {
   columns: Column[]
   rows: Row[]
 }
 
-const CreateRow = (row: IRow, cols: Column[], key: number): JSX.Element => {
-  const rowKeys = Object.keys(row.fields)
-  const rowResult = cols.map((col, i) => {
-    const rIndex = rowKeys.indexOf(col.field)
-    return rIndex !== -1
-      ? <TableData field={row.fields[col.field]} key={i} />
-      : <TableData field='empty' key={i} />
-  })
-  return <tr key={key}>{rowResult}</tr>
-}
+const DasboardDataMatrix = (props: DasboardDataMatrixProps): JSX.Element => {
+  let {
+    columns,
+    rows
+  } = props
+  const classes = useStyles()
 
-const MapDataToRows = (rows: Row[], columns: Column[]): JSX.Element[] => {
-  return rows.map((row: Row, key) => CreateRow(row, columns, key))
-}
-
-const MapDataToCols = (cols: Column[]): JSX.Element => {
-  return (
-    <tr style={{ height: '70px' }}>
-      {cols.map((col, i) => {
-        return (
-          <TableCol key={i} field={col.field} />
-        )
-      })}
-    </tr>
-  )
-}
-
-const PositionCompareFn = <T extends Compare>(a: T, b: T): number => {
-  if (typeof a.position === 'undefined' &&
-      typeof b.position !== 'undefined') return 1
-  if (typeof a.position !== 'undefined' &&
-      typeof b.position === 'undefined') return -1
-  if (typeof a.position !== 'undefined' &&
-      typeof b.position !== 'undefined') {
-    if ((a.position != null && b.position != null) && a.position > b.position) return 1
-    if ((a.position != null && b.position != null) && a.position < b.position) return -1
-    if (a.position === b.position) return 0
-  }
-  return 0
-}
-
-const OrderItemsByPosition = <T extends Compare>(list: T[]): T[] => {
-  const temp = list.slice()
-  return temp.sort(PositionCompareFn)
-}
-
-const DasboardDataMatrix: React.FC<Props> = (props: Props) => {
-  let { columns, rows } = props
   columns = OrderItemsByPosition(columns)
   rows = OrderItemsByPosition(rows)
-  const classes = useStyles()
+
   return (
     <Box className={classes.tableContainer}>
       <table className={classes.table}>
-        <thead>
-          {MapDataToCols(columns)}
-        </thead>
-        <tbody>
-          {MapDataToRows(rows, columns)}
-        </tbody>
+        {<DataMatrixHeader columns={columns} />}
+        {<DataMatrixBody columns={columns} rows={rows} />}
       </table>
     </Box>
   )
