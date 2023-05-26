@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Button, type ButtonProps, CircularProgress } from '@material-ui/core'
 
 interface LoadingButtonProps extends ButtonProps {

@@ -5,7 +5,7 @@ import { ClickAwayListener, Popper, createStyles, makeStyles } from '@material-u
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     rootDiv: {
       width: '350px',
@@ -19,17 +19,17 @@ const useStyles = makeStyles(() =>
       overflow: 'auto',
       position: 'absolute',
       zIndex: 9999,
-      backgroundColor: 'green',
-      color: 'white'
+      backgroundColor: theme.palette.neutral.n200,
+      color: theme.palette.neutral.n100
     },
     paper: {
-      backgroundColor: 'green'
+      backgroundColor: theme.palette.neutral.n700
     },
     listItem: {
       cursor: 'pointer',
       padding: '12px 0 12px 8px',
       '&:hover': {
-        background: 'darkgreen'
+        background: theme.palette.neutral.n900
       }
     }
   })
@@ -40,7 +40,7 @@ interface AutoCompleteTextFieldProps {
   name: string
   label: string
   defaultValue?: string | null
-  handleInputChange: (field: string, value: any, shouldValidate?: boolean | undefined) => any
+  handleInputChange: (field: string, value: any) => any
 }
 
 const filterValues = (filterText: string | undefined, list: JSX.Element[] | undefined): JSX.Element[] => {
@@ -66,6 +66,7 @@ const AutoCompleteTextField = (props: AutoCompleteTextFieldProps): JSX.Element =
   const { t } = useTranslation()
   const [selectedValue, setSelectedValue] = useState(defaultValue ?? '')
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
   const jsxElementList = useMemo(() => values?.map((value, i) => {
     return (
       <div

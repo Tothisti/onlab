@@ -5,13 +5,13 @@ import _ from 'lodash'
 import DataMatrixHeader from './DataMatrixHeader'
 import DataMatrixBody from './DataMatrixBody'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     tableContainer: {
-      height: '800px',
+      height: '80vh',
       width: '100%',
       overflow: 'auto',
-      backgroundColor: '#fff'
+      backgroundColor: theme.palette.common.white
     },
     table: {
       borderCollapse: 'collapse'

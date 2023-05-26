@@ -15,7 +15,7 @@ const useLogInStatus = (): boolean => {
   useEffect(() => {
     if (loginStatus === 'succeeded') {
       setIsLoading(false)
-      enqueueSnackbar(t('success'), { variant: 'success' })
+      enqueueSnackbar(t('Logged in'), { variant: 'success' })
     }
 
     if (loginStatus === 'loading') {

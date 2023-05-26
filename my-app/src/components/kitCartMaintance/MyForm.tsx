@@ -124,7 +124,7 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
               value={formik.values[field.name]}
               required={field.required}
               error={typeof formik.errors[field.name] !== 'undefined'}
-              variant="outlined"
+              variant='outlined'
               helperText={typeof formik.errors[field.name] !== 'undefined' ? formik.errors[field.name] as string : ''}
               key={i}
             />
@@ -135,7 +135,7 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
           <FormControl className={classes.formControl} variant='outlined'>
             <TextField
               id={field.name}
-              type="number"
+              type='number'
               name={field.name}
               label={field.labelText}
               inputProps={{
@@ -145,7 +145,7 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
               value={formik.values[field.name]}
               required={field.required}
               error={typeof formik.errors[field.name] !== 'undefined'}
-              variant="outlined"
+              variant='outlined'
               helperText={typeof formik.errors[field.name] !== 'undefined' ? formik.errors[field.name] as string : ''}
               key={i}
             />
@@ -159,9 +159,9 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
             className={classes.formControl}
             variant='filled'
           >
-            <InputLabel htmlFor="filled-age-native-simple">{field.labelText}</InputLabel>
+            <InputLabel htmlFor='filled-age-native-simple'>{field.labelText}</InputLabel>
             <Select
-              native
+              native={true}
               value={formik.values[field.name]}
               onChange={formik.handleChange}
               inputProps={{
@@ -169,7 +169,7 @@ const MyForm: React.FC<MyFormProps> = (props: MyFormProps) => {
                 id: 'filled-age-native-simple'
               }}
             >
-              <option aria-label="None" value="" ></option>
+              <option aria-label='None' value='' ></option>
               {field.inputType.items?.map((item, index) => {
                 return <option key={index} value={item}>{item}</option>
               })}

@@ -40,47 +40,55 @@ const useStyles = makeStyles((theme) =>
         alignItems: 'center',
         marginBottom: '12px',
         gap: '12px'
+      },
+      avatar: {
+        backgroundColor: theme.palette.primary.light
+      },
+      icon: {
+        color: theme.palette.primary.main
       }
     }
   )
 )
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const CreateMenuItem = (text: string, linkTo: string, Icon: JSX.Element): JSX.Element => {
+  return (
+    <MyLinkComponent
+      to={linkTo}>
+      <MenuItem>
+        <ListItemIcon>
+          {/* <Icon fontSize='small' style={{ color: 'red' }} /> */}
+          {Icon}
+        </ListItemIcon>
+        {text}
+      </MenuItem>
+    </MyLinkComponent>
+  )
+}
 
 const Menu: React.FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
   return (
     <Paper className={classes.loginPanel} elevation={5}>
-      <Box
-        className={classes.menuBox}
-      >
-        <Avatar>
-          <MenuIcon />
+      <Box className={classes.menuBox} >
+        <Avatar className={classes.avatar}>
+          <MenuIcon/>
         </Avatar>
-        <Typography
-          variant='h1'
-        >
-          {t('menu')}
-        </Typography>
+        <Typography variant='h1'>{t('menu')}</Typography>
       </Box>
       <MenuList>
-        <MenuItem>
-          <ListItemIcon>
-            <DashboardIcon fontSize='small' />
-          </ListItemIcon>
-          <MyLinkComponent
-            to={'/kitting-dashboard'}>
-            {t('kittingDashboard')}
-          </MyLinkComponent>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <DnsIcon fontSize='small' />
-          </ListItemIcon>
-          <MyLinkComponent
-            to={'/kitting-maintance'}>
-            {t('kitCartMaintance')}
-          </MyLinkComponent>
-        </MenuItem>
+        {CreateMenuItem(
+          t('kittingDashboard'),
+          '/kitting-dashboard',
+          <DashboardIcon className={classes.icon}/>
+        )}
+        {CreateMenuItem(
+          t('kitCartMaintance'),
+          '/kitting-maintance',
+          <DnsIcon className={classes.icon}/>
+        )}
       </MenuList>
     </Paper>
   )

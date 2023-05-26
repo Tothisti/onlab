@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { type DashboardData } from '../../models/api/DashboardData'
 import DasboardDataMatrix, { type Column, type Row } from './dataTable/DashboardDataMatrix'
 import { useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { GetDashboardData, selectDashboardData, selectPrepArea, selectProdLine, 
 import { CircularProgress } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from '../../app/store'
+import { Dialog } from 'react-agcobpmes-core'
 
 const MapDashboardDataToRows = (dashboardData: DashboardData[] | null): Row[] => {
   if (!dashboardData) return []
@@ -29,15 +30,21 @@ const MapDashboardDataToRows = (dashboardData: DashboardData[] | null): Row[] =>
   return res
 }
 
+//  const columns = { field: 'colName' }
+//  const rows = { colName: 'cell'}
+
 const MatrixPanel: React.FC = () => {
   const selectedProdLine = useSelector(selectProdLine)
   const selectedPrepArea = useSelector(selectPrepArea)
   const matrixData = useSelector(selectDashboardData)
   const matrixDataLoadingState = useSelector(selectStatus)
+  const [errorText, setErrorText] = useState('')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   useEffect(() => {
+    if (selectedProdLine === '' && selectedPrepArea === '') return
     dispatch(GetDashboardData())
       .catch(() => { console.log('hiba') })
   }, [selectedProdLine, selectedPrepArea])
@@ -51,20 +58,36 @@ const MatrixPanel: React.FC = () => {
     return [{ field: 'order', position: -999, fieldText: orderText }, ...res]
   }
 
-  const GetMatrixComponent = (): JSX.Element => {
-    if (matrixDataLoadingState === 'succeeded' && matrixData !== null) {
+  const GetMatrixComponent = (): JSX.Element | null => {
+    if (matrixDataLoadingState === 'succeeded' &&
+      matrixData !== null
+    ) {
       const rows = MapDashboardDataToRows(matrixData)
       const cols = MapDashboardDataToCols(matrixData)
       return <DasboardDataMatrix rows={rows} columns={cols} />
-    }
-    if (matrixDataLoadingState === 'loading') {
+    } else if (matrixDataLoadingState === 'loading') {
       return <CircularProgress />
+    } else {
+      return null
     }
-    if (matrixDataLoadingState === 'failed') return <div>{t('apiError')}</div>
-    return <div>{t('nodata')}</div>
   }
 
-  return GetMatrixComponent()
+  useEffect(() => {
+    if (matrixData !== null && matrixData.length === 0) {
+      const error = t('nodata')
+      setErrorText(error.toUpperCase())
+      setIsDialogOpen(true)
+    }
+  }, [matrixData])
+
+  return (
+    <>
+      <Dialog title={errorText} open={isDialogOpen} handleClose={() => { setIsDialogOpen(false) }} maxWidth='md'>
+        {errorText}
+      </Dialog>
+      {GetMatrixComponent()}
+    </>
+  )
 }
 
 export default MatrixPanel

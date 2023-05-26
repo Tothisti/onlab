@@ -1,41 +1,43 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { type FieldData } from './DashboardDataMatrix'
 
-const useStyles = makeStyles({
-  tableData: {
-    height: '250px',
-    borderBottom: '3px solid black'
-  },
-  dataDiv: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'strectch',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
-    gap: '6px',
-    textAlign: 'center'
-  },
-  OUT: {
-    background: 'red'
-  },
-  NS: {
-    background: 'yellow'
-  },
-  NA: {
-    background: 'gray'
-  },
-  IP: {
-    background: 'green'
-  },
-  IT: {
-    background: 'blue'
-  },
-  RFTR: {
-    background: 'pink'
-  }
-})
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    tableData: {
+      height: '250px',
+      borderBottom: '3px solid black'
+    },
+    dataDiv: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'strectch',
+      flexDirection: 'column',
+      height: '100%',
+      width: '100%',
+      gap: '6px',
+      textAlign: 'center'
+    },
+    OUT: {
+      background: '#CF1124',
+      color: theme.palette.neutral.n100
+    },
+    NS: {
+      background: '#F7C948'
+    },
+    NA: {
+      background: 'gray'
+    },
+    IP: {
+      background: '#27AB83'
+    },
+    IT: {
+      background: '#9446ED'
+    },
+    RFTR: {
+      background: 'pink'
+    }
+  }))
 
 interface Props {
   field: FieldData | FieldData[] | string
@@ -53,11 +55,12 @@ const returnStateClassName = (state: string): stateClassNames => {
 const TableData = ({ field }: Props): JSX.Element => {
   const classes = useStyles()
 
-  const createtableDataWithColor = (data: FieldData | string): JSX.Element => {
+  const createtableDataWithColor = (data: FieldData | string, id?: number): JSX.Element => {
     if (typeof data === 'object') {
       return (
         <div
           className={`${classes.dataDiv} ${classes[returnStateClassName(data.value)]}`}
+          key={id}
         >
           {data.value}
         </div>
@@ -72,7 +75,7 @@ const TableData = ({ field }: Props): JSX.Element => {
         {
           Array.isArray(field)
             ? field.map((item: FieldData, i) =>
-              createtableDataWithColor(item))
+              createtableDataWithColor(item, i))
             : createtableDataWithColor(field)
         }
       </div>

@@ -3,16 +3,16 @@ import { createTheme, responsiveFontSizes } from '@material-ui/core'
 let theme = createTheme({
   palette: {
     primary: {
-      dark: '#0E7C86',
-      light: '#54D1DB',
-      main: '#14919B',
+      dark: '#102A43',
+      light: '#486581',
+      main: '#243B53',
       contrastText: '#F0F4F8'
     },
     secondary: {
-      dark: '#2D3A8C',
-      light: '#647ACB',
-      main: '#4055A8',
-      contrastText: '#F0F4F8'
+      dark: '#035388',
+      light: '#2BB0ED',
+      main: '#0B69A3',
+      contrastText: '#D9E2EC'
     },
     neutral: {
       n100: '#F0F4F8',
@@ -24,6 +24,17 @@ let theme = createTheme({
       n700: '#334E68',
       n800: '#243B53',
       n900: '#102A43'
+    },
+    grey: {
+      100: '#F0F4F8',
+      200: '#D9E2EC',
+      300: '#BCCCDC',
+      400: '#9FB3C8',
+      500: '#829AB1',
+      600: '#627D98',
+      700: '#334E68',
+      800: '#243B53',
+      900: '#102A43'
     }
   },
   typography: {

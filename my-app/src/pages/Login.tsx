@@ -6,50 +6,52 @@ import { useSelector } from 'react-redux'
 import { loginUser, selectUser } from '../features/authSlice'
 import { useNavigate } from 'react-router'
 import { useAppDispatch } from '../app/store'
-import { createStyles, withStyles, type WithStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import LoadingButton from '../components/auth/LoadingButton'
 import useLogInStatus from '../hooks/useLogInStatus'
 import { Avatar, Typography } from '@material-ui/core'
 import LockIcon from '@material-ui/icons/Lock'
+import PasswordField from '../components/auth/PasswordFields'
 
-const styles = createStyles(
-  {
-    loginPanel: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%',
-      height: '70vh',
-      maxWidth: '500px',
-      maxHeight: '500px',
-      minHeight: '300px',
-      margin: '16px',
-      padding: '16px'
-    },
-    form: {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column'
-    },
-    textField: {
-      width: '100%',
-      maxWidth: '300px'
-    },
-    avatar: {
-      margin: 1,
-      bgcolor: 'secondary.main'
-    },
-    loadingButton: {
-      marginTop: '4px',
-      width: '100%'
-    }
-  }
+const useStyles = makeStyles((theme) =>
+  createStyles(
+    {
+      loginPanel: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        height: '70vh',
+        maxWidth: '500px',
+        maxHeight: '500px',
+        minHeight: '300px',
+        margin: '16px',
+        padding: '16px'
+      },
+      form: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+      },
+      textField: {
+        width: '100%',
+        maxWidth: '300px'
+      },
+      avatar: {
+        margin: 1,
+        backgroundColor: theme.palette.primary.light
+      },
+      loadingButton: {
+        marginTop: '4px',
+        width: '100%'
+      }
+    })
 )
 
-const Login = (props: WithStyles<typeof styles>): JSX.Element => {
-  const { classes } = props
+const Login = (): JSX.Element => {
+  const classes = useStyles()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [username, setUserName] = useState('')
@@ -85,7 +87,7 @@ const Login = (props: WithStyles<typeof styles>): JSX.Element => {
             value={username}
             onChange={(e) => { setUserName(e.target.value) }}
           />
-          <TextField
+          <PasswordField
             className={classes.textField}
             id='username'
             label={t('password')}
@@ -93,7 +95,6 @@ const Login = (props: WithStyles<typeof styles>): JSX.Element => {
             margin='normal'
             value={password}
             onChange={(e) => { setPassword(e.target.value) }}
-          // type='password'
           />
           <LoadingButton
             text={t('login')}
@@ -107,4 +108,4 @@ const Login = (props: WithStyles<typeof styles>): JSX.Element => {
   )
 }
 
-export default withStyles(styles)(Login)
+export default Login

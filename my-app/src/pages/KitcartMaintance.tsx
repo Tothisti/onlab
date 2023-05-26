@@ -59,7 +59,6 @@ const KittingMaintance: React.FC = () => {
   const dispatch = useAppDispatch()
   const [selectedRow, setSelectedRow] = useState<any>()
   const rows = useSelector(selectKitCartData)
-  const token = useSelector(selectToken)
   const { i18n } = useTranslation()
   const handleSubmit = (values: any): void => {
     // convert form values to API values
@@ -74,13 +73,7 @@ const KittingMaintance: React.FC = () => {
     // api post call
     myAxios.post(
       'Administration/KitCart/UpdateKitCartRecord',
-      JSON.stringify(values),
-      {
-        headers: {
-          ...GenerateTokenHeader(token),
-          'Content-Type': 'application/json'
-        }
-      }
+      JSON.stringify(values)
     )
       .then((res) => {
         if (res.status === 200) enqueueSnackbar(t('success'), { variant: 'success' })
@@ -133,7 +126,7 @@ const KittingMaintance: React.FC = () => {
     maxHeight: '80vh',
     idColumn: 'kitCartNo',
     paging: {
-      color: '#FF0000',
+      color: '#BCCCDC',
       defaultPageSize: 10
     },
     language: GetCorrectLanguageFormat(i18n.language),

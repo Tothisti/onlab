@@ -1,7 +1,5 @@
 import React from 'react'
 import myAxios from '../../app/api/axiosInstance'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../../features/authSlice'
 import { useAppDispatch } from '../../app/store'
 import { getKitCartDataRows } from '../../features/kitCartMaintanceSlice'
 import { useTranslation } from 'react-i18next'

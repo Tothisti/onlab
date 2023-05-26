@@ -7,7 +7,8 @@ export const en = {
     logout: 'logout',
     back: 'back',
     autocompleteError: 'Please select correct value',
-    success: 'Success',
+    success: 'Succeeded',
+    'Logged in': 'Logged in',
     'Username or password is incorrect': 'Username or password is incorrect',
     apiError: 'Something went wrong',
     numberInputError: 'Use only numbers',
@@ -33,10 +34,10 @@ export const en = {
     save: 'save',
     preparationArea: 'preparation area',
     prodLine: 'prod line',
-    nodata: 'no data',
+    nodata: 'no data received from the server',
     order: 'order',
     kittingDashboard: 'Kitting dasboard',
-    menu: 'Menu',
+    menu: 'Main Menu',
     kitCartMaintance: 'Kit cart maintance'
   }
 }
